@@ -24,7 +24,10 @@ function App() {
 				</Navbar>
 			</Container>
 			
-			<p style={styles.p}>Welcome to Woolies Smart Saver App!</p>
+			<h1 style={styles.h1}>Woolies Smart Saver</h1>
+			<p className="text-muted" style={styles.p}>Automatic notification on sales of your favourite Woolworths products</p>
+			
+
 			<br />
 			<Route path="/signup" exact component={SignUp} />
 			<Route path="/home" exact component={Home} />
@@ -34,11 +37,19 @@ function App() {
 }
 
 const styles = {
+	h1: {
+		fontFamily: "Roboto, sans-serif",
+		fontSize: "40px",
+		fontWeight: "normal",
+		textAlign: "center",
+		margin: "40px"
+	},
+
 	p: {
 		fontFamily: "Roboto, sans-serif",
 		fontSize: "24px",
-		fontWeight: "bold",
-		textAlign: "center"
+		textAlign: "center",
+		margin: "20px",
 	}
 }
 

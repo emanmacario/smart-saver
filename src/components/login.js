@@ -30,6 +30,7 @@ function Login(props) {
 
     return (
         <div className="login" style={styles.signUp}>
+            <h1 style={styles.h1}>Log In</h1>
             <Form>
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
@@ -59,6 +60,9 @@ const styles = {
         borderRadius: "10%",
         backgroundColor: "rgba(255, 255, 255, 0.815)",
         margin: "auto"
+    },
+    h1: {
+        fontSize: "24px",
     }
 };
 
