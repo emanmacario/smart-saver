@@ -23,7 +23,9 @@ connection.once('open', () => {
 
 // Set routers
 const userRouter = require('./routes/userRoute');
-app.use('/user', userRouter);
+const productRouter = require('./routes/productRoute');
+app.use('/users', userRouter);
+app.use('/products', productRouter);
 
 // Passively listen on specified port
 app.listen(port, () => {
