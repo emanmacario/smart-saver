@@ -6,23 +6,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function Login(props) {
-    const [name, setName] = useState(null);
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const user = {
-            name: name,
             email: email,
             password: password
         }
 
-        console.log(`Name: ${name}`);
         console.log(`Email: ${email}`);
         console.log(`Password: ${password}`);
         
-        axios.post('http://localhost:5000/users/add', user)
+        axios.post('http://localhost:5000/users/login', user)
             .then((res) => {
                 console.log(res.data);
             })
@@ -34,11 +31,6 @@ function Login(props) {
     return (
         <div className="login" style={styles.signUp}>
             <Form>
-                <Form.Group controlId="formBasicName">
-                    <Form.Label>Full name</Form.Label>
-                    <Form.Control type="text" required placeholder="Enter full name" onChange={(e) => setName(e.target.value)}/>
-                </Form.Group>
-
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
                     <Form.Control type="email" placeholder="Enter email" onChange={(e) => setEmail(e.target.value)}/>
@@ -52,14 +44,10 @@ function Login(props) {
                     <Form.Control type="password" placeholder="Enter password" onChange={(e) => setPassword(e.target.value)} />
                 </Form.Group>
 
-                <Button variant="primary" type="submit" onClick={handleSubmit}>
-                    Submit
+                <Button className="float-right" variant="primary" type="submit" onClick={handleSubmit}>
+                    Login
                 </Button>
             </Form>
-
-            <Button variant="primary" onClick={console.log("clicked button")}>
-                Button
-            </Button>
         </div>
     )
 }
@@ -69,7 +57,8 @@ const styles = {
         width: "33%",
         padding: "1.5em",
         borderRadius: "10%",
-        backgroundColor: "rgba(255, 255, 255, 0.815)"
+        backgroundColor: "rgba(255, 255, 255, 0.815)",
+        margin: "auto"
     }
 };
 

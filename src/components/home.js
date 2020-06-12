@@ -39,15 +39,16 @@ function Home(props) {
                 </Form.Group>
             </Form>
             <Button 
-                className="text-right" 
+                className="float-right" 
                 variant="primary" 
                 type="submit" 
                 onClick={handleSubmit}>
-                Submit
+                Add
             </Button>
             
-            {showError ? <div><br /><Alert variant='danger'>The URL you have entered is invalid</Alert></div>
-                       : <div><br /><Alert variant='success'>Your product has been added</Alert></div>}
+            {//showError ? <div><br /><Alert variant='danger'>The URL you have entered is invalid</Alert></div>
+             //          : <div><br /><Alert variant='success'>Your product has been added</Alert></div>
+            }
         </div>
     )
 }
