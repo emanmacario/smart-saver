@@ -14,13 +14,17 @@ router.route('/').get((req, res) => {
 
 
 router.route('/add').post((req, res) => {
+    const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
 
     const user = new User({
+        name: name,
         email: email,
         password: password
     });
+    // DEBUGGING
+    console.log(user);
 
     user.save()
         .then(() => {
@@ -41,17 +45,17 @@ router.route('/login').post((req, res) => {
         // Validate the password
         user.comparePassword(password, function(err, isMatch) {
             if (err) {
-                res.status(200).json({ 'success': false, 'message': 'There was an error, please try again'});
+                res.status(200).json({ 'success': false, 'message': 'There was an error, please try again' });
             }
             if (isMatch) {
-                res.status(200).json({ 'success': true });
+                res.status(200).json({ 'success': true, 'message': 'User added succesfully' });
             } else {
-                res.status(200).json({ 'success': false, 'message': 'The details you have entered are invalid'});
+                res.status(200).json({ 'success': false, 'message': 'The details you have entered are invalid' });
             }
         });
     })
     .catch(err => {
-        res.status(400).json({'success': false, 'message': 'Could not find a user with that email address'})
+        res.status(400).json({'success': false, 'message': 'Could not find a user with that email address' })
     });
 });
 
