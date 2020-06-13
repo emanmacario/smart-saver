@@ -28,15 +28,19 @@ function Home(props) {
 
     return (
         <div className="productUrlForm" style={styles.productUrlForm}>
+            <h1 style={styles.h1}>Add Item</h1>
             <Form>
                 <Form.Group controlId="">
-                    <Form.Label>Enter product URL</Form.Label>
+                    <Form.Label>Enter Woolworths product URL</Form.Label>
                     <Form.Control 
                         type="text" 
                         required 
-                        placeholder="Enter Woolworths product URL" 
+                        placeholder="Enter URL" 
                         onChange={(e) => setProductUrl(e.target.value)} />
                 </Form.Group>
+                <Form.Text className="text-muted">
+                    Example: https://www.woolworths.com.au/shop/productdetails/412367/woolworths-potato-leek-soup
+                </Form.Text>
             </Form>
             <Button 
                 className="float-right" 
@@ -57,6 +61,10 @@ const styles = {
     productUrlForm: {
         margin: 'auto',
         width: '40%'
+    },
+    h1: {
+        fontSize: "24px",
+        marginTop: "40px"
     }
 };
 

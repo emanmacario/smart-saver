@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { UserContext } from '../contexts/UserContext';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
@@ -9,7 +10,11 @@ function Login(props) {
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
 
+    // CONTEXT DEBUGGING
+    const {value, setValue}= useContext(UserContext);
+
     const handleSubmit = (event) => {
+        setValue(email);
         event.preventDefault();
         const user = {
             email: email,
@@ -30,6 +35,7 @@ function Login(props) {
 
     return (
         <div className="login" style={styles.signUp}>
+            <p>Context: {value}</p>
             <h1 style={styles.h1}>Log In</h1>
             <Form>
                 <Form.Group controlId="formBasicEmail">
