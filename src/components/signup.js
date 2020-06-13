@@ -7,13 +7,21 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function SignUp(props) {
+    const [validated, setValidated] = useState(false);
     const [name, setName] = useState(null);
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     const {value, setValue} = useContext(UserContext);
 
     const handleSubmit = (event) => {
-        event.preventDefault();
+        const form = event.currentTarget;
+        if (form.checkValidity === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        setValidated(true);
+
         const user = {
             name: name,
             email: email,
@@ -38,26 +46,49 @@ function SignUp(props) {
 
             <p>Context: {value}</p>
             <h1 style={styles.h1}>Create Account</h1>
-            <Form>
+            <Form noValidate validate={validated} onSubmit={handleSubmit}>
                 <Form.Group controlId="formBasicName">
                     <Form.Label>Full name</Form.Label>
-                    <Form.Control type="text" required placeholder="Enter full name" onChange={(e) => setName(e.target.value)}/>
+                    <Form.Control 
+                        required
+                        type="text"
+                        placeholder="Enter full name"
+                        onChange={(e) => setName(e.target.value)}/>
+                    <Form.Control.Feedback>
+                        Looks good!
+                    </Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">
+                        Please enter your full name
+                    </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" onChange={(e) => setEmail(e.target.value)}/>
+                    <Form.Control 
+                        required
+                        type="email"
+                        placeholder="Enter email" 
+                        onChange={(e) => setEmail(e.target.value)}/>
                     <Form.Text className="text-muted">
-                    We'll never share your email with anyone else.
+                        We'll never share your email with anyone else.
                     </Form.Text>
+                    <Form.Control.Feedback type="invalid">
+                        Please enter a valid email address
+                    </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Enter password" onChange={(e) => setPassword(e.target.value)} />
+                    <Form.Control
+                        required
+                        type="password"
+                        placeholder="Enter password"
+                        onChange={(e) => setPassword(e.target.value)} />
+                    <Form.Control.Feedback type="invalid">
+                        Please enter a valid email address
+                    </Form.Control.Feedback>
                 </Form.Group>
-
-                <Button className="float-right" variant="primary" type="submit" onClick={handleSubmit}>
+                <Button className="float-right" variant="primary" type="submit">
                     Sign up
                 </Button>
             </Form>

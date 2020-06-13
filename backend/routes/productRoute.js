@@ -28,16 +28,23 @@ router.route('/add').post((req, res) => {
     // TODO: Save product to database [DONE]
 
     const details = getProductDetails(url);
-    const product = createProductObject(details);
-
-    product.save()
-        .then(() => {
-            res.status(200).json({ 'success': true });
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(400).json({ 'success': false });
-        });
+    console.log("Product details is null: " + details);
+    details
+    .then(result => {
+        const product = createProductObject(result);
+        product.save()
+            .then(() => {
+                res.status(200).json({ 'success': true });
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(400).json({ 'success': false });
+            });
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(200).json({success: false, message: 'Error retrieving product details'});
+    })
 });
 
 
@@ -66,13 +73,13 @@ const getProductNumber = (url) => {
 // publicly exposed Woolworths product API endpoint
 const getProductDetails = async (url) => {
     const productNumber = getProductNumber(url);
-    const endpoint = `https://www.woolworths.com.au/apis/ui/product/detail/${productNumber}?isMobile=false`;
+    const endpoint = `https://www.woolworths.com.au/apis/ui/product/detail/${productNumber}`;
 
     try {
         const response = await axios.get(endpoint);
         console.log(response.status);
         //console.log(response.data);
-        return response;
+        return response.data;
     } catch (err) {
         console.log(err);
     }
@@ -82,18 +89,27 @@ const getProductDetails = async (url) => {
 const createProductObject = (productDetails) => {
     productDetails = productDetails['Product'];
 
-    const product = new Product({
+    //console.log(JSON.stringify(productDetails));
+
+    console.log(`Name: ${productDetails['Name']}`);
+    console.log(`WasPrice: ${productDetails['WasPrice']}`);
+    console.log(`InStorePrice: ${productDetails['InstorePrice']}`);
+    console.log(`InStoreIsOnSpecial: ${productDetails['InstoreIsOnSpecial']}`);
+    console.log(`LargeImageFile: ${productDetails['LargeImageFile']}`);
+    console.log(`InStoreSavingsAmount: ${productDetails['InstoreSavingsAmount']}`);
+
+    const product = {
         name: productDetails['Name'],
         prevPrice: productDetails['WasPrice'],
         price: productDetails['InstorePrice'],
         onSpecial: productDetails['InstoreIsOnSpecial'],
         imagePath: productDetails['LargeImageFile'],
-        savingsAmount: productDetatils['InstoreSavingsAmount']
-    });
+        savingsAmount: productDetails['InstoreSavingsAmount']
+    }
 
-    console.log(product);
+    console.log(JSON.stringify(product));
 
-    return product;
+    return new Product(product);
 }
 
 module.exports = router;

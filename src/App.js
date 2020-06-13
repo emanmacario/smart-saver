@@ -11,6 +11,7 @@ import Container from 'react-bootstrap/Container';
 import SignUp from './components/signup';
 import Login from './components/login';
 import Home from './components/home';
+import FormExample from './components/formExample';
 
 import { UserContext } from './contexts/UserContext';
 
@@ -27,6 +28,7 @@ function App() {
 						<Nav className="mr-auto">
 							<Nav.Link as={Link} to="/signup">Create Account</Nav.Link>
 							<Nav.Link as={Link} to="/login">Log In</Nav.Link>
+							<Nav.Link as={Link} to="/formExample">Form Example</Nav.Link>
 						</Nav>
 						<Form inline>
 						<FormControl type="text" placeholder="Search" className="mr-sm-2" />
@@ -42,6 +44,7 @@ function App() {
 				<Route path="/" exact component={Home} />
 				<Route path="/signup" exact component={SignUp} />
 				<Route path="/login" exact component={Login} />
+				<Route path="/formExample" exact component={FormExample} />
 			</UserContext.Provider>
 		</Router>
   	);
