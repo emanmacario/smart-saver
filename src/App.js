@@ -12,6 +12,7 @@ import SignUp from './components/signup';
 import Login from './components/login';
 import Home from './components/home';
 import FormExample from './components/formExample';
+import ViewProducts from './components/viewProducts';
 
 import { UserContext } from './contexts/UserContext';
 
@@ -29,10 +30,11 @@ function App() {
 							<Nav.Link as={Link} to="/signup">Create Account</Nav.Link>
 							<Nav.Link as={Link} to="/login">Log In</Nav.Link>
 							<Nav.Link as={Link} to="/formExample">Form Example</Nav.Link>
+							<Nav.Link as={Link} to="/viewProducts">Products</Nav.Link>
 						</Nav>
 						<Form inline>
-						<FormControl type="text" placeholder="Search" className="mr-sm-2" />
-						<Button variant="outline-success">Search</Button>
+							<FormControl type="text" placeholder="Search" className="mr-sm-2" />
+							<Button variant="outline-success">Search</Button>
 						</Form>
 					</Navbar.Collapse>
 				</Navbar>
@@ -45,6 +47,7 @@ function App() {
 				<Route path="/signup" exact component={SignUp} />
 				<Route path="/login" exact component={Login} />
 				<Route path="/formExample" exact component={FormExample} />
+				<Route path="/viewProducts" exact component={ViewProducts} />
 			</UserContext.Provider>
 		</Router>
   	);
