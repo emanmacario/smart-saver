@@ -14,22 +14,24 @@ function ViewProducts(props) {
             <p>This is the ViewProducts component</p>
             <CardDeck>
                 <Card className="text-center">
-                    <Card.Header><strong>SAVE $0.55</strong></Card.Header>
+                    <Card.Header>
+                        <medium><strong>WAS $3.75</strong></medium>
+                    </Card.Header>
                     <Card.Img style={styles.productImage} variant="bottom" src="https://cdn0.woolworths.media/content/wowproductimages/large/412367.jpg" />
                     <Card.Body>
                         <Card.Title>Woolworths Potato & Leek Soup </Card.Title>
                         <Card.Text style={styles.productPrice}>
-                            Was $3.75
+                            Save $0.55
                         </Card.Text>
                         <Button variant="danger">Remove</Button>
                     </Card.Body>
                     <Card.Footer>
-                        <medium className="text"><strong>NOW $2.50</strong></medium>
+                        <medium><strong>NOW $2.50</strong></medium>
                     </Card.Footer>
                 </Card>
                 <Card className="text-center">
                     <Card.Header>SPECIAL</Card.Header>
-                    <Card.Img style={styles.productImage} variant="bottom" src="https://cdn0.woolworths.media/content/wowproductimages/large/412367.jpg" />
+                    <Card.Img style={styles.productImage} variant="bottom" src="https://cdn0.woolworths.media/content/wowproductimages/large/38609.jpg" />
                     <Card.Body>
                     <Card.Title>Woolworths Potato & Leek Soup </Card.Title>
                     <Card.Text>
@@ -43,7 +45,7 @@ function ViewProducts(props) {
                 </Card>
                 <Card className="text-center">
                     <Card.Header>SPECIAL</Card.Header>
-                    <Card.Img style={styles.productImage} variant="bottom" src="https://cdn0.woolworths.media/content/wowproductimages/large/412367.jpg" />
+                    <Card.Img style={styles.productImage} variant="bottom" src="https://cdn0.woolworths.media/content/wowproductimages/large/826730.jpg" />
                     <Card.Body>
                     <Card.Title>Woolworths Potato & Leek Soup </Card.Title>
                     <Card.Text>
@@ -56,6 +58,26 @@ function ViewProducts(props) {
                     </Card.Footer>
                 </Card>
             </CardDeck>
+            <CardDeck>
+                <Card className="text-center">
+                    <Card.Header>
+                        <medium><strong>WAS $3.75</strong></medium>
+                    </Card.Header>
+                    <Card.Img style={styles.productImage} variant="bottom" src="https://cdn0.woolworths.media/content/wowproductimages/large/412367.jpg" />
+                    <Card.Body>
+                        <Card.Title>Woolworths Potato & Leek Soup </Card.Title>
+                        <Card.Text style={styles.productPrice}>
+                            Save $0.55
+                        </Card.Text>
+                        <Button variant="danger">Remove</Button>
+                    </Card.Body>
+                    <Card.Footer>
+                        <medium><strong>NOW $2.50</strong></medium>
+                    </Card.Footer>
+                </Card>
+                <Card className="text-center"></Card>
+                <Card className="text-center"></Card>
+            </CardDeck>
         </Container>
     )
 }
@@ -63,9 +85,10 @@ function ViewProducts(props) {
 
 const styles = {
     productImage: {
-        width: "50%",
+        width: "40%",
         margin: "auto",
-        display: "block"
+        display: "block",
+        paddingTop: "15px"
     },
     productPrice: {
         fontSize: "20px"
