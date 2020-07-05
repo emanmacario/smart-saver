@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    name: {
+    username: {
         type: String,
         required: true
     },
@@ -23,6 +23,8 @@ const userSchema = new Schema({
 userSchema.pre('save', function(next) {
     var user = this;
 
+    console.log("saving new user");
+
     // Only hash the password if it has been modified
     if (!user.isModified('password')) {
         return next();
@@ -39,6 +41,7 @@ userSchema.pre('save', function(next) {
             }
             // Override the old hash with the new hashed password
             user.password = hash;
+            console.log(`Hash: ${hash}`);
             next();
         });
     });
