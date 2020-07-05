@@ -1,10 +1,14 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
 const connection = require('./config/database');
 const MongoStore = require('connect-mongo')(session);
 require('dotenv').config();
+
+
+const router = require('express').Router;
 
 
 // GENERAL SETUP
@@ -37,6 +41,7 @@ app.use(passport.session());
 app.use((req, res, next) => {
     console.log(req.session);
     console.log(req.user);
+    next();
 });
 
 
