@@ -13,7 +13,7 @@ router.route('/').get((req, res) => {
 });
 
 
-router.route('/add').post((req, res) => {
+router.route('/register').post((req, res) => {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
@@ -37,7 +37,16 @@ router.route('/add').post((req, res) => {
 });
 
 
-router.route('/login').post((req, res) => {
+router.route('/login', passport.authenticate('local', { failureRedirect: '/', successRedirect: '/viewProducts'}));
+
+
+router.route('/logout').get((req, res) => {
+    req.logout();
+    res.redirect('/'); 
+});
+
+
+/* router.route('/login').post((req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     User.findOne({ email: email })
@@ -57,6 +66,6 @@ router.route('/login').post((req, res) => {
     .catch(err => {
         res.status(400).json({'success': false, 'message': 'Could not find a user with that email address'})
     });
-});
+}); */
 
 module.exports = router;

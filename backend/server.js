@@ -1,33 +1,53 @@
 const express = require('express');
 const cors = require('cors');
-const mongoose = require('mongoose');
+const session = require('express-session');
+const passport = require('passport');
+const connection = require('./config/database');
+const MongoStore = require('connect-mongo')(session);
 require('dotenv').config();
 
+
+// GENERAL SETUP
 const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Establish connection to MongoDB Atlas Cluster
-const uri = process.env.ATLAS_URI;
-mongoose.connect(uri, { 
-    useNewUrlParser: true, 
-    useCreateIndex: true,
-    useUnifiedTopology: true
-});
-const connection = mongoose.connection;
-connection.once('open', () => {
-    console.log('Connection to MongoDB cluster established');
+// SESSIONS SETUP
+const sessionStore = new MongoStore({ mongooseConnection: connection, collection: 'sessions' });
+
+app.use(session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: true,
+    store: sessionStore,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24  // Equals one day
+    }
+}));
+
+// PASSPORT AUTHENTICATION
+require('./config/passport');
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Debugging middleware
+app.use((req, res, next) => {
+    console.log(req.session);
+    console.log(req.user);
 });
 
-// Set routers
+
+// SET ROUTES
 const userRouter = require('./routes/userRoute');
 const productRouter = require('./routes/productRoute');
 app.use('/users', userRouter);
 app.use('/products', productRouter);
 
-// Passively listen on specified port
+
+// SERVER
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 });
