@@ -2,6 +2,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+/* TODO:
+    1. Store Woolworths product URL
+    2. Store product number
+    3. Set the index, e.g. index: { unique: true }
+*/
+
 const productSchema = new Schema({
     name: {
         type: String,

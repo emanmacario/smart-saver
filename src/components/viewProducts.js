@@ -1,21 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 import Container from 'react-bootstrap/Container';
 import CardDeck from 'react-bootstrap/CardDeck';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 
+import SpecialProductCardDeck from './specialProductCardDeck';
+
+
 function ViewProducts(props) {
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState(null);
+
+
+    useEffect(() => {
+        axios.get('http://localhost:5000/products/')
+            .then(response => {
+                setProducts(response.data);
+                console.log("Response data: " + JSON.stringify(response.data));
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    });
 
 
     return (
         <Container>
             <p>This is the ViewProducts component</p>
+
+            <h3>On Special Products</h3>
+            <br/>
             <CardDeck>
                 <Card className="text-center">
                     <Card.Header>
-                        <medium><strong>WAS $3.75</strong></medium>
+                        <strong>WAS $3.75</strong>
                     </Card.Header>
                     <Card.Img style={styles.productImage} variant="bottom" src="https://cdn0.woolworths.media/content/wowproductimages/large/412367.jpg" />
                     <Card.Body>
@@ -26,7 +45,7 @@ function ViewProducts(props) {
                         <Button variant="danger">Remove</Button>
                     </Card.Body>
                     <Card.Footer>
-                        <medium><strong>NOW $2.50</strong></medium>
+                        <strong>NOW $2.50</strong>
                     </Card.Footer>
                 </Card>
                 <Card className="text-center">
@@ -58,26 +77,9 @@ function ViewProducts(props) {
                     </Card.Footer>
                 </Card>
             </CardDeck>
-            <CardDeck>
-                <Card className="text-center">
-                    <Card.Header>
-                        <medium><strong>WAS $3.75</strong></medium>
-                    </Card.Header>
-                    <Card.Img style={styles.productImage} variant="bottom" src="https://cdn0.woolworths.media/content/wowproductimages/large/412367.jpg" />
-                    <Card.Body>
-                        <Card.Title>Woolworths Potato & Leek Soup </Card.Title>
-                        <Card.Text style={styles.productPrice}>
-                            Save $0.55
-                        </Card.Text>
-                        <Button variant="danger">Remove</Button>
-                    </Card.Body>
-                    <Card.Footer>
-                        <medium><strong>NOW $2.50</strong></medium>
-                    </Card.Footer>
-                </Card>
-                <Card className="text-center"></Card>
-                <Card className="text-center"></Card>
-            </CardDeck>
+
+            <SpecialProductCardDeck products={products} />
+            
         </Container>
     )
 }
