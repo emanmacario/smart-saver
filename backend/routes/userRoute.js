@@ -4,27 +4,16 @@ const passport = require('passport');
 let User = require('../models/userModel');
 
 
-router.route('/helloWorld').get((req, res) => {
-    res.json({'Hello world': true});
-});
-
-
-router.route('/samplePost').post((req, res) => {
-    res.status(200).json({"hello": "world"});
-})
-
-
+// Returns a user object if a user is authenticated
 router.route('/').get((req, res) => {
-    User.find()
-        .then(users => {
-            res.status(200).json(users);
-        })
-        .catch(err => {
-            res.status(400).json(err);
-        });
+    if (req.user) {
+        res.json({ user: user });
+    } else {
+        res.json({ user: null });
+    }
 });
 
-
+// User sign up endpoint
 router.route('/register').post((req, res) => {
     const username = req.body.username;
     const email = req.body.email;
@@ -36,9 +25,7 @@ router.route('/register').post((req, res) => {
         password: password
     });
     // DEBUGGING
-    console.log("Someone is registering");
     console.log(newUser);
-
 
     newUser.save()
         .then(() => {
@@ -50,38 +37,24 @@ router.route('/register').post((req, res) => {
         });
 });
 
-router.route('/add').post((req, res) => {
-    const name = req.body.name;
-    const email = req.body.email;
-    const password = req.body.password;
-
-    const user = new User({
-        name: name,
-        email: email,
-        password: password
-    });
-    // DEBUGGING
-    console.log(user);
-
-    user.save()
-        .then(() => {
-            res.status(200).json({'success': true});
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(400).json({'success': false});
-        });
+// User login endpoint
+router.post('/login', passport.authenticate('local'), (req, res) => {
+    console.log("Logged in", req.user);
+    var userInfo = {
+        username: req.user.username
+    }
+    res.status(200).json(userInfo);
 });
 
-
-router.route('/login', passport.authenticate('local', { failureRedirect: '/', successRedirect: '/viewProducts'}));
-
-
+// User logout endpoint
 router.route('/logout').get((req, res) => {
-    req.logout();
-    res.redirect('/'); 
+    if (req.user) {
+        req.logout();
+        res.json({ message: "Logging out" });
+    } else {
+        res.json({ message: "No user to log out" });
+    }
 });
-
 
 /* router.route('/login').post((req, res) => {
     const email = req.body.email;

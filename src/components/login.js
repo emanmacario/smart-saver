@@ -8,25 +8,28 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Login(props) {
     const [email, setEmail] = useState(null);
+    const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
 
-    // CONTEXT DEBUGGING
-    const {value, setValue}= useContext(UserContext);
-
     const handleSubmit = (event) => {
-        setValue(email);
         event.preventDefault();
         const user = {
             email: email,
+            username: username,
             password: password
         }
 
         console.log(`Email: ${email}`);
+        console.log(`Username: ${username}`);
         console.log(`Password: ${password}`);
         
         axios.post('http://localhost:5000/users/login', user)
             .then((res) => {
                 console.log(res.data);
+                if (res.status === 200) {
+                    props.setIsAuth(true);
+                    props.history.push('/viewProducts');
+                }
             })
             .catch((err) => {
                 console.log(err);
@@ -35,15 +38,11 @@ function Login(props) {
 
     return (
         <div className="login" style={styles.signUp}>
-            <p>Context: {value}</p>
             <h1 style={styles.h1}>Log In</h1>
             <Form>
-                <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" onChange={(e) => setEmail(e.target.value)}/>
-                    <Form.Text className="text-muted">
-                    We'll never share your email with anyone else.
-                    </Form.Text>
+                <Form.Group controlId="formBasicUsername">
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control type="email" placeholder="Enter username" onChange={(e) => setUsername(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group controlId="formBasicPassword">

@@ -8,10 +8,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function SignUp(props) {
     const [validated, setValidated] = useState(false);
-    const [name, setName] = useState(null);
+    const [username, setUsername] = useState(null);
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
-    const {value, setValue} = useContext(UserContext);
 
     const handleSubmit = (event) => {
         const form = event.currentTarget;
@@ -23,16 +22,16 @@ function SignUp(props) {
         setValidated(true);
 
         const user = {
-            name: name,
+            username: username,
             email: email,
             password: password
         }
 
-        console.log(`Name: ${name}`);
+        console.log(`Username: ${username}`);
         console.log(`Email: ${email}`);
         console.log(`Password: ${password}`);
         
-        axios.post('http://localhost:5000/users/add', user)
+        axios.post('http://localhost:5000/users/register', user)
             .then((res) => {
                 console.log(res.data);
             })
@@ -43,22 +42,20 @@ function SignUp(props) {
 
     return (
         <div className="signUp" style={styles.signUp}>
-
-            <p>Context: {value}</p>
             <h1 style={styles.h1}>Create Account</h1>
             <Form noValidate validate={validated} onSubmit={handleSubmit}>
-                <Form.Group controlId="formBasicName">
-                    <Form.Label>Full name</Form.Label>
+                <Form.Group controlId="formBasicUsername">
+                    <Form.Label>Username</Form.Label>
                     <Form.Control 
                         required
                         type="text"
-                        placeholder="Enter full name"
-                        onChange={(e) => setName(e.target.value)}/>
+                        placeholder="Enter username"
+                        onChange={(e) => setUsername(e.target.value)}/>
                     <Form.Control.Feedback>
                         Looks good!
                     </Form.Control.Feedback>
                     <Form.Control.Feedback type="invalid">
-                        Please enter your full name
+                        Please enter a username
                     </Form.Control.Feedback>
                 </Form.Group>
 
