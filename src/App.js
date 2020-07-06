@@ -26,6 +26,9 @@ function App() {
 	const [username, setUsername] = useState(null);
 
 	useEffect(() => {
+		console.log("=== APP MOUNTING ===");
+		console.log(`isAuth: ${isAuth}`);
+
 		axios.get('http://localhost:5000/users/')
 			.then((res) => {
 				console.log("GET /users/ response: ")
@@ -36,8 +39,8 @@ function App() {
 					setUsername(res.data.user.username);
 				} else {
 					console.log("There is no user saved in a session");
-					setIsAuth(false);
-					setUsername(null);
+					//setIsAuth(false);
+					//setUsername(null);
 				}
 			})
 			.catch((err) => {
@@ -92,7 +95,7 @@ function App() {
 			<p className="text-muted" style={styles.p}>Automatic notification of sales on your favourite Woolworths products</p>
 
 
-			<Route path="/" exact component={Home} />
+			<Route path="/" exact render={(props) => <SignUpClean {...props} setIsAuth={setIsAuth} />} />
 			<Route path="/signup" exact render={(props) => <SignUpClean {...props} setIsAuth={setIsAuth} />} />
 			<Route path="/login" exact component={(props) => <Login {...props} setIsAuth={setIsAuth} />}/>
 			<Route path="/viewProducts" exact component={ViewProducts} />

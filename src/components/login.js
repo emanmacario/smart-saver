@@ -19,9 +19,7 @@ function Login(props) {
             password: password
         }
 
-        console.log(`Email: ${email}`);
-        console.log(`Username: ${username}`);
-        console.log(`Password: ${password}`);
+        console.log(JSON.stringify(user));
         
         axios.post('http://localhost:5000/users/login', user)
             .then((res) => {
@@ -39,18 +37,29 @@ function Login(props) {
     return (
         <div className="login" style={styles.signUp}>
             <h1 style={styles.h1}>Log In</h1>
-            <Form>
+            <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formBasicUsername">
                     <Form.Label>Username</Form.Label>
-                    <Form.Control type="email" placeholder="Enter username" onChange={(e) => setUsername(e.target.value)}/>
+                    <Form.Control 
+                        required 
+                        type="text" 
+                        placeholder="Enter username" 
+                        onChange={(e) => setUsername(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Enter password" onChange={(e) => setPassword(e.target.value)} />
+                    <Form.Control 
+                        required 
+                        type="password" 
+                        placeholder="Enter password"
+                        onChange={(e) => setPassword(e.target.value)} />
                 </Form.Group>
 
-                <Button className="float-right" variant="primary" type="submit" onClick={handleSubmit}>
+                <Button 
+                    className="float-right" 
+                    variant="primary" 
+                    type="submit">
                     Login
                 </Button>
             </Form>

@@ -2,6 +2,7 @@ const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 let User = require('../models/userModel');
+const { NavbarText } = require('react-bootstrap/Navbar');
 
 
 // Returns a user object if a user is authenticated
@@ -38,12 +39,27 @@ router.route('/register').post((req, res) => {
 });
 
 // User login endpoint
-router.post('/login', passport.authenticate('local'), (req, res) => {
-    console.log("Logged in", req.user);
-    var userInfo = {
-        username: req.user.username
-    }
-    res.status(200).json(userInfo);
+router.post('/login', (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+        if (err) {
+            res.status(500).json({ message: "Something went wrong authenticating the user" });
+            return;
+        }
+
+        if (!user) {
+            res.status(401).json(info);
+            return;
+        }
+
+        // Save user in session
+        req.logIn(user, (err) => {
+            if (err) {
+                res.status(500).json({ message: "Session could not save user" });
+                return;
+            }
+            res.status(200).json({ success: true, user: user });
+        });
+    })(req, res, next);
 });
 
 // User logout endpoint

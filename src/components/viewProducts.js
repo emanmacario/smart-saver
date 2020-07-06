@@ -12,17 +12,16 @@ import SpecialProductCardDeck from './specialProductCardDeck';
 function ViewProducts(props) {
     const [products, setProducts] = useState(null);
 
-
-    useEffect(() => {
+    /* useEffect(() => {
         axios.get('http://localhost:5000/products/')
             .then(response => {
                 setProducts(response.data);
-                console.log("Response data: " + JSON.stringify(response.data));
+                //console.log("Response data: " + JSON.stringify(response.data));
             })
             .catch(err => {
                 console.log(err);
             });
-    });
+    }); */
 
 
     return (
@@ -78,7 +77,7 @@ function ViewProducts(props) {
                 </Card>
             </CardDeck>
 
-            <SpecialProductCardDeck products={products} />
+            {/* <SpecialProductCardDeck products={products} /> */}
             
         </Container>
     )
