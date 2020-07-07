@@ -41,6 +41,7 @@ router.route('/register').post((req, res) => {
 // User login endpoint
 router.post('/login', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
+        console.log("Route login callback called");
         if (err) {
             res.status(500).json({ message: "Something went wrong authenticating the user" });
             return;
@@ -53,10 +54,12 @@ router.post('/login', (req, res, next) => {
 
         // Save user in session
         req.logIn(user, (err) => {
+            console.log("req.logIn was called!");
             if (err) {
                 res.status(500).json({ message: "Session could not save user" });
                 return;
             }
+            console.log("Returning user, login successful");
             res.status(200).json({ success: true, user: user });
         });
     })(req, res, next);

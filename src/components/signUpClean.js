@@ -21,6 +21,9 @@ function SignUpClean(props) {
             username: username,
             password: password,
             email: email
+        },
+        {
+            withCredentials: true,
         })
         .then((res) => {
             console.log("Sign up response: ")

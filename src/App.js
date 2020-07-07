@@ -29,7 +29,7 @@ function App() {
 		console.log("=== APP MOUNTING ===");
 		console.log(`isAuth: ${isAuth}`);
 
-		axios.get('http://localhost:5000/users/')
+		axios.get('http://localhost:5000/users/', { withCredentials: true })
 			.then((res) => {
 				console.log("GET /users/ response: ")
 				console.log(res.data);

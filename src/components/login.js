@@ -21,10 +21,12 @@ function Login(props) {
 
         console.log(JSON.stringify(user));
         
-        axios.post('http://localhost:5000/users/login', user)
+        axios.post('http://localhost:5000/users/login', user, { withCredentials: true })
             .then((res) => {
+                console.log("Login response:")
                 console.log(res.data);
                 if (res.status === 200) {
+                    console.log("Res status is 200")
                     props.setIsAuth(true);
                     props.history.push('/viewProducts');
                 }
