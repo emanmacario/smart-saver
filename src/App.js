@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, useHistory, Redirect } from 'react-router-dom';
 
 // React Bootstrap components
 import Navbar from 'react-bootstrap/Navbar';
@@ -21,7 +21,7 @@ import ViewProducts from './components/viewProducts';
 import SignUpClean from './components/signUpClean';
 
 
-function App() {
+function App(props) {
 	const [isAuth, setIsAuth] = useState(false);
 	const [username, setUsername] = useState(null);
 
@@ -36,7 +36,9 @@ function App() {
 				if (res.data.user) {
 					console.log("There is a user saved in a server session");
 					setIsAuth(true);
+					//useHistory().push('/viewProducts');
 					setUsername(res.data.user.username);
+
 				} else {
 					console.log("There is no user saved in a session");
 					//setIsAuth(false);
@@ -51,7 +53,7 @@ function App() {
 	const logout = (event) => {
 		event.preventDefault();
 		console.log("Logging out!");
-		axios.post('http://localhost:5000/users/logout/')
+		axios.get('http://localhost:5000/users/logout/', { withCredentials: true })
 			.then((res) => {
 				console.log('GET /users/logout/ response:')
 				console.log(res.data);
@@ -77,7 +79,7 @@ function App() {
 								<Nav className="mr-auto">
 									<Nav.Link as={Link} to="/viewProducts">Products</Nav.Link>
 									<Form inline>
-										<Button variant="outline-secondary">Logout</Button>
+										<Button variant="outline-secondary" onClick={logout}>Logout</Button>
 									</Form>
 								</Nav>
 								
@@ -94,27 +96,28 @@ function App() {
 			<h1 style={styles.h1}>Woolies Smart Saver</h1>
 			<p className="text-muted" style={styles.p}>Automatic notification of sales on your favourite Woolworths products</p>
 
-
-			<Route path="/" exact render={(props) => <SignUpClean {...props} setIsAuth={setIsAuth} />} />
-			<Route path="/signup" exact render={(props) => <SignUpClean {...props} setIsAuth={setIsAuth} />} />
-			<Route path="/login" exact component={(props) => <Login {...props} setIsAuth={setIsAuth} />}/>
-			<Route path="/viewProducts" exact component={ViewProducts} />
-			
-			{ /*isAuth ? (
-				<div>
-					<Route path="/" exact component={Home} />
-					<Route path="/viewProducts" exact component={ViewProducts} />
-				</div>
-				
-			) : (
-				<div>
-					<Route path="/" exact component={Home} />
-					<Route path="/signup" exact component={SignUp} />
-					<Route path="/login" exact component={Login} />
-				</div>
+			<Route path="/" exact component={Home} />
+			<Route path="/signup" exact render={() => (
+                isAuth ? (
+                    <Redirect to="/viewProducts" />
+                ) : (
+                    <SignUpClean />
+                )
+            )} />
+            <Route path="/login" exact render={(props) => (
+                isAuth ? (
+                    <Redirect to="/viewProducts"/>
+                ) : (
+                    <Login {...props} setIsAuth={setIsAuth} />
+                )
+            )} />
+			<Route path="/viewProducts" render={() => (
+				isAuth ? (
+                    <ViewProducts />
+				) : (
+					<Redirect to='/login'/>
 				)
-			*/ }
-
+			)} />
 		</Router>
   	);
 }

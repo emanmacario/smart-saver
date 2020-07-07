@@ -8,7 +8,7 @@ const { NavbarText } = require('react-bootstrap/Navbar');
 // Returns a user object if a user is authenticated
 router.route('/').get((req, res) => {
     if (req.user) {
-        res.json({ user: user });
+        res.json({ user: req.user });
     } else {
         res.json({ user: null });
     }
