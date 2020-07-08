@@ -1,7 +1,9 @@
 // Schema for user
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const { productSchema } = require('./productModel');
 const Schema = mongoose.Schema;
+
 
 const userSchema = new Schema({
     username: {
@@ -16,7 +18,8 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    products: [productSchema]
 })
 
 // Store password as hashes in database

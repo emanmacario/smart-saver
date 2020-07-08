@@ -9,6 +9,10 @@ const Schema = mongoose.Schema;
 */
 
 const productSchema = new Schema({
+    productNumber: {
+        type: Number,
+        required: true
+    },
     name: {
         type: String,
         required: true
@@ -35,4 +39,7 @@ const productSchema = new Schema({
 });
 
 const Product = mongoose.model('Product', productSchema);
-module.exports = Product;
+module.exports = {
+    productSchema: productSchema,
+    Product: Product
+}

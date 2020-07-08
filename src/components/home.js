@@ -14,16 +14,19 @@ function Home(props) {
         event.preventDefault();
         console.log('Submitted URL: ' + productUrl);
 
-        try {
-            const response = 
-                await axios.post('http://localhost:5000/products/add', {
-                    url: productUrl
-                });
-            setShowError(false);
-        } catch (err) {
+        axios.post('http://localhost:5000/users/products', { 
+            url: productUrl 
+        }, { 
+            withCredentials: true 
+        })
+        .then((res) => {
+            console.log(res.status);
+            console.log(res.data);
+        })
+        .catch((err) => {
+            console.log("Error here for some reason");
             console.log(err);
-            setShowError(true);
-        }
+        });
     }
 
     return (

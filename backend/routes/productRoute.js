@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const axios = require('axios').default;
-let Product = require('../models/productModel');
+const { Product } = require('../models/productModel');
 
 
 router.route('/').get((req, res) => {
