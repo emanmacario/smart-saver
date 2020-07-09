@@ -122,12 +122,13 @@ router.route('/products').post(isAuth, (req, res) => {
                             (err, success) => {
                                 if (err) {
                                     console.log(err);
+                                    res.status(500).json({ success: false, message: 'Product could not be saved' });
                                 } else {
                                     console.log(success);
+                                    res.status(200).json({ success: true, message: 'Product has been added' });
                                 }
                             }
                         );
-                        res.status(200).json({ success: true, message: 'Product has been added' });
                     } else {
                         res.status(400).json({ success: false, message: 'Product could not be found' });
                     }
@@ -166,7 +167,22 @@ router.route('/products').get(isAuth, (req, res) => {
 // ANOTHER UNTESTED ENDPOINT
 router.route('/products/:productNumber').delete(isAuth, (req, res) => {
     // TODO: Delete product for user if it exists
-    
+    const { productNumber } = req.params;
+    console.log(`Trying to delete: ${productNumber}`);
+
+    User.findOneAndUpdate(
+        { _id: user._id },
+        { $pull: { products: { productNumber: productNumber } } },
+        (err, success) => {
+            if (err) {
+                console.log(err);
+                res.status(500).json({ success: false, message: 'Product could not be deleted' });
+            } else {
+                console.log(success);
+                res.status(500).json({ success: false, message: 'Product successfully deleted' });
+            }
+        }
+    );
 });
 
 
