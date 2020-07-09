@@ -11,7 +11,7 @@ const User = require('../models/userModel');
 mongoose.set('useFindAndModify', false);
 
 
-// Returns a user object if a user is authenticated
+// Returns a user object for an authenticated user
 router.route('/').get((req, res) => {
     if (req.user) {
         res.json({ user: req.user });
@@ -83,7 +83,6 @@ router.route('/logout').get((req, res) => {
 });
 
 
-
 // User products routes
 router.route('/products').post(isAuth, (req, res) => {
     // Validate the URL
@@ -93,34 +92,48 @@ router.route('/products').post(isAuth, (req, res) => {
     if (!valid) {
         return res.status(400).json({ success: false, message: 'Invalid URL entered, please try again' });
     }
-
-    // TODO: Add product to database using user id
     console.log("Valid URL entered");
-    //res.status(200).json({ success: true, message: 'Valid URL entered [from server]'});
-    //return;
-    console.log(req.user);
 
     User.findById(req.user._id)
         .then(async (user) => {
 
-            // TODO: Need to ensure no duplicate products added for same user
+            // Check if user has already added the product
+            const productNumber = getProductNumber(url);
+            console.log(`Product Number: ${productNumber}`);
+            var isDuplicate = false;
 
-            // Add the product for the user
-            const product = await createProductObject(url);
-            if (product) {                
-                User.findOneAndUpdate(
-                    { _id: user._id },
-                    { $push: { products: product } },
-                    (err, success) => {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            console.log(success);
-                        }
-                });
-                res.status(200).json({ success: true, message: 'Product has been added' });
-            } else {
-                res.status(400).json({ success: false, message: 'Product could not be found' });
+            for (let product of user.products) {
+                if (productNumber == product.productNumber) {
+                    console.log("Duplicate product found for user");
+                    isDuplicate = true;
+                    res.status(400).json({ success: false, message: 'Duplicate URL entered' });
+                    break;
+                }
+            }
+
+            // Add the product for the specified user if they have not already added it
+            if (!isDuplicate) {
+                try {
+                    const product = await createProductObject(url);
+                    if (product) {                
+                        User.findOneAndUpdate(
+                            { _id: user._id },
+                            { $push: { products: product } },
+                            (err, success) => {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    console.log(success);
+                                }
+                            }
+                        );
+                        res.status(200).json({ success: true, message: 'Product has been added' });
+                    } else {
+                        res.status(400).json({ success: false, message: 'Product could not be found' });
+                    }
+                } catch (err) {
+                    console.log(err);
+                }
             }
         })
         .catch((err) => {
@@ -148,6 +161,13 @@ router.route('/products').get(isAuth, (req, res) => {
         });
 });
 
+
+
+// ANOTHER UNTESTED ENDPOINT
+router.route('/products/:productNumber').delete(isAuth, (req, res) => {
+    // TODO: Delete product for user if it exists
+    
+});
 
 
 /* --- HELPER FUNCTIONS --- */
@@ -213,70 +233,5 @@ const createProductObject = async (url) => {
 
     return new Product(product);
 }
-
-
-
-
-/*
-router.route('/add').post((req, res) => {
-    const url = req.body.url;
-    console.log(url);
-    validUrl = validateUrl(url);
-    if (!validUrl) {
-        res.status(200).json({ 'success': false, 'message': 'Invalid URL entered, please try again' });
-        return;
-    }
-
-    // TODO: Make call to Woolworths API endpoint [DONE]
-    // TODO: Parse JSON response [DONE]
-    // TODO: Save product to database [DONE]
-
-    const details = getProductDetails(url);
-    console.log("Product details is null: " + details);
-    details
-    .then(result => {
-        const product = createProductObject(result);
-        product.save()
-            .then(() => {
-                res.status(200).json({ 'success': true });
-            })
-            .catch(err => {
-                console.log(err);
-                res.status(400).json({ 'success': false });
-            });
-    })
-    .catch(err => {
-        console.log(err);
-        res.status(200).json({success: false, message: 'Error retrieving product details'});
-    })
-});
-
-
-
-
-*/
-
-
-/* router.route('/login').post((req, res) => {
-    const email = req.body.email;
-    const password = req.body.password;
-    User.findOne({ email: email })
-    .then(user => {
-        // Validate the password
-        user.comparePassword(password, function(err, isMatch) {
-            if (err) {
-                res.status(200).json({'success': false, 'message': 'There was an error, please try again'});
-            }
-            if (isMatch) {
-                res.status(200).json({'success': true, 'message': 'Logged in succesfully'});
-            } else {
-                res.status(400).json({'success': false, 'message': 'The details you have entered are invalid'});
-            }
-        });
-    })
-    .catch(err => {
-        res.status(400).json({'success': false, 'message': 'Could not find a user with that email address'})
-    });
-}); */
 
 module.exports = router;

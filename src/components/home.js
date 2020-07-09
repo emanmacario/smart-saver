@@ -24,8 +24,8 @@ function Home(props) {
             console.log(res.data);
         })
         .catch((err) => {
-            console.log("Error here for some reason");
             console.log(err);
+            console.log(err.response.data);
         });
     }
 
