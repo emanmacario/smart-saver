@@ -145,9 +145,8 @@ router.route('/products').post(isAuth, (req, res) => {
 });
 
 
-// UNTESTED ENDPOINT
+// Gets products for a user
 router.route('/products').get(isAuth, (req, res) => {
-    // TODO: Get products from database and return
     User.findById(req.user._id)
         .then((user) => {
             res.status(200).json({
@@ -171,7 +170,7 @@ router.route('/products/:productNumber').delete(isAuth, (req, res) => {
     console.log(`Trying to delete: ${productNumber}`);
 
     User.findOneAndUpdate(
-        { _id: user._id },
+        { _id: req.user._id },
         { $pull: { products: { productNumber: productNumber } } },
         (err, success) => {
             if (err) {
@@ -179,7 +178,7 @@ router.route('/products/:productNumber').delete(isAuth, (req, res) => {
                 res.status(500).json({ success: false, message: 'Product could not be deleted' });
             } else {
                 console.log(success);
-                res.status(500).json({ success: false, message: 'Product successfully deleted' });
+                res.status(200).json({ success: true, message: 'Product successfully deleted' });
             }
         }
     );
