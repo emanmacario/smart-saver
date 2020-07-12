@@ -7,6 +7,10 @@ const MongoStore = require('connect-mongo')(session);
 require('dotenv').config();
 
 
+// Trying Node CRON job for emails
+const cron = require('node-cron');
+
+
 // GENERAL SETUP
 const app = express();
 const port = process.env.PORT || 5000;
@@ -58,6 +62,13 @@ const userRouter = require('./routes/userRoute');
 const productRouter = require('./routes/productRoute');
 app.use('/users', userRouter);
 app.use('/products', productRouter);
+
+
+// Schedule CRON job
+const emailUsers = require('./realm/emailUsers');
+//cron.schedule('* * * * *', emailUsers);
+emailUsers();
+
 
 
 // SERVER
