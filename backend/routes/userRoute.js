@@ -236,16 +236,16 @@ const createProductObject = async (url) => {
     const product = {
         productNumber: getProductNumber(url),
         name: info['Name'],
+        description: info['Description'],
         prevPrice: info['WasPrice'],
         price: info['InstorePrice'],
+        prevOnSpecial: false,
         onSpecial: info['InstoreIsOnSpecial'],
         imagePath: info['LargeImageFile'],
         savingsAmount: info['InstoreSavingsAmount']
     }
 
     console.log(JSON.stringify(product));
-
-
     return new Product(product);
 }
 

@@ -17,12 +17,20 @@ const productSchema = new Schema({
         type: String,
         required: true
     },
+    description: {
+        type: String,
+        required: true
+    },
     prevPrice: {
         type: Number,
         required: true
     },
     price: {
         type: Number,
+        required: true
+    },
+    prevOnSpecial: {
+        type: Boolean,
         required: true
     },
     onSpecial: {

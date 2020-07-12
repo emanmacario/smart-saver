@@ -14,11 +14,12 @@ exports = function() {
             
             // Get the product details from Woolworths API
             const productNumber = product.productNumber;
-            const response = await context.http.get({ url : `https://www.woolworths.com.au/apis/ui/product/detail/${productNumber}` });
+            const response = await context.http.get({ url: `https://www.woolworths.com.au/apis/ui/product/detail/${productNumber}` });
             var updatedProduct = EJSON.parse(response.body.text()).Product;
             
             // Extract the details
             const name = updatedProduct['Name'];
+            const description = updatedProduct['Description'];
             const prevPrice = updatedProduct['WasPrice'];
             const price = updatedProduct['InstorePrice'];
             const onSpecial = updatedProduct['InstoreIsOnSpecial'];
@@ -30,8 +31,10 @@ exports = function() {
               { username: user.username, "products.productNumber": productNumber },
               { $set: { 
                   "products.$.name": name,
+                  "products.$.description": description,
                   "products.$.prevPrice": prevPrice,
                   "products.$.price": price,
+                  "products.$.prevOnSpecial": product.onSpecial,
                   "products.$.onSpecial": onSpecial,
                   "products.$.imagePath": imagePath,
                   "products.$.savingsAmount": savingsAmount
