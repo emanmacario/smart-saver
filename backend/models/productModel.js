@@ -42,7 +42,8 @@ const productSchema = new Schema({
         required: true
     },
     savingsAmount: {
-        type: Number
+        type: Number,
+        required: true
     }
 });
 
