@@ -55,7 +55,7 @@ function ViewProducts() {
             <ProductsPagination page={page} setPage={setPage} hasNextPage={hasNextPage} />
             {console.log(`Products: ${JSON.stringify(products)}`)}
             {console.log(`Has Next Page: ${hasNextPage}`)}
-            {loading && <div><Spinner animation="border"/><span><h4>Loading...</h4></span></div>}
+            {loading && <div><Spinner as="span" animation="border"/><h4>Loading...</h4></div>}
             {products.map(product => {
                 return <Product key={product.productNumber} product={product} handleRemove={handleRemove} />
             })}
