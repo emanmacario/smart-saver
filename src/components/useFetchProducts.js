@@ -25,7 +25,7 @@ function reducer(state, action) {
   }
 }
 
-function useFetchProducts(params, page) {
+function useFetchProducts(params, page, removed) {
   const [state, dispatch] = useReducer(reducer, { products: [], loading: true });
 
   console.log(`Params: ${JSON.stringify(params)}`)
@@ -68,7 +68,7 @@ function useFetchProducts(params, page) {
       cancelTokenProducts.cancel();
       cancelTokenPages.cancel();
     }
-  }, [params, page]);
+  }, [params, page, removed]);
 
   return state;
 }
