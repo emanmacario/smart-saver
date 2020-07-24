@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import CardDeck from 'react-bootstrap/CardDeck';
 
-import ProductCard from './productCard';
+import ProductCard from './ProductCard';
 import Card from 'react-bootstrap/Card';
 
 

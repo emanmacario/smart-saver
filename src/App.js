@@ -11,14 +11,13 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 
 // Application components
-import SignUp from './components/signup';
-import Login from './components/login';
-import Home from './components/home';
-import FormExample from './components/formExample';
-import ViewProducts from './components/viewProducts';
+import SignUp from './components/SignUp';
+import Login from './components/Login';
+import Home from './components/Home';
+import ViewProducts from './components/ViewProducts';
 
 // DEBUGGING
-import SignUpClean from './components/signUpClean';
+import SignUpClean from './components/SignUpClean';
 
 
 function App(props) {

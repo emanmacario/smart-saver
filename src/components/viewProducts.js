@@ -1,94 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 
-import ProductCard from './productCard';
-import ProductDeck from './productDeck';
+import Product from './Product';
+import ProductsPagination from './ProductsPagination';
+import SearchForm from './SearchForm';
+import useFetchProducts from './useFetchProducts';
 
-import Container from 'react-bootstrap/Container';
-import CardDeck from 'react-bootstrap/CardDeck';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
-import Spinner from 'react-bootstrap/Spinner';
+import { Container, Spinner } from 'react-bootstrap';
 
 
 
-function ViewProducts(props) {
-    
 
-    const [isLoading, setIsLoading] = useState(true);
+function ViewProducts() {
+    const [params, setParams] = useState({}); // useState({ name: '', onSpecial: false });
+    const [page, setPage] = useState(1);
+    const { products, loading, error, hasNextPage } = useFetchProducts(params, page);
 
-    const [products, setProducts] = useState(null);
-    const [specials, setSpecials] = useState(null);
-    const [normals, setNormals] = useState(null); 
-    const [removed, setRemoved] = useState(false);
-
-    useEffect(() => {
-        axios.get('http://localhost:5000/users/products', { withCredentials: true })
-            .then(res => {
-                setProducts(res.data.products);
-                console.log("Response data: " + JSON.stringify(res.data));
-                if (res.data.products) {
-                    console.log("PRODUCTS LENGTH: " + res.data.products.length);
-                }
-            })
-            .catch(err => {
-                console.log(err);
-                console.log(err.status);
-                console.log(err.data);
-            });
-        return () => {
-            setRemoved(false);
-        }
-    }, [removed]);
-
-
-    // Slices the array of products into sub-arrays
-    const splitProducts = (products) => {
-        const rowSize = 3;
-        var rows = [];
-        for (let i = 0; i < products.length; i += rowSize) {
-            rows.push(products.slice(i, i + rowSize));
-        }
-        return rows;
-    }
-
-
-    if (!products) {
-        return (
-            <Container>
-                <h3>My Products</h3>
-                { isLoading ? 
-                    <div><br /><Spinner animation="grow" /></div>
-                    :
-                    (!products) ? <p>You currently have no products</p> : null
-                }
-                
-            </Container>
-        )
-    }
-
-    if (products.length == 0) {
-        return (
-            <Container>
-                <h3>My Products</h3>
-                <br />
-                <p>You currently have no products</p>
-            </Container>
-        )
+    // Handle search form parameter changes
+    const handleParamChange = (e) => {
+        const param = e.target.name;
+        const value = param == 'onSpecial' ? !params.onSpecial : e.target.value;
+        setPage(1);
+        setParams((prevParams) => {
+            return { ...prevParams, [param]: value }
+        });
     }
 
     return (
-        <Container>
+        <Container className="my-4">
             <h3>My Products</h3>
-            <br/>
-            {
-                splitProducts(products).map((row, index) => (
-                    <div key={index}>
-                        <ProductDeck key={index} products={row} setRemoved={setRemoved} />
-                        <br/>
-                    </div>
-                ))
-            }
+            <SearchForm params={params} onParamChange={handleParamChange} />
+            <ProductsPagination page={page} setPage={setPage} hasNextPage={hasNextPage} />
+            {console.log(`Products: ${JSON.stringify(products)}`)}
+            {console.log(`Has Next Page: ${hasNextPage}`)}
+            {loading && <div><Spinner animation="border"/><span><h4>Loading...</h4></span></div>}
+            {products.map(product => {
+                return <Product key={product.productNumber} product={product} />
+            })}
+            <ProductsPagination page={page} setPage={setPage} hasNextPage={hasNextPage} />
         </Container>
     )
 }
