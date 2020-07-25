@@ -25,7 +25,10 @@ function Home(props) {
         })
         .catch((err) => {
             console.log(err);
-            console.log(err.response.data);
+            if (err.response) {
+                console.log(err.response.data);
+                console.log(err.response.status);
+            }
         });
     }
 

@@ -3,16 +3,18 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 /* TODO:
-    1. Store Woolworths product URL
-    2. Store product number
-    3. Set the index, e.g. index: { unique: true }
+    1. Add URL (Do yourself)
+    2. Full description (FullDescription)
+    3. Instore cup string (InstoreCupString)
+    4. isNew (IsNew)
+    5. Last date on special
+    6. Special period
+    7. Available in store (InstoreIsPurchasable)
 */
 
+// TODO: Change productNumber to number
 const productSchema = new Schema({
-    productNumber: {
-        type: Number,
-        required: true
-    },
+    productNumber: { type: Number, required: true },
     name: {
         type: String,
         required: true
