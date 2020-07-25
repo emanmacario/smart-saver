@@ -6,7 +6,6 @@ const mongoose = require('mongoose');
 const isAuth = require('./authMiddleware');
 const { Product } = require('../models/productModel');
 const User = require('../models/userModel');
-const { useReducer } = require('react');
 
 // Suppress Mongoose deprecation warnings
 mongoose.set('useFindAndModify', false);
@@ -107,7 +106,7 @@ router.route('/products').post(isAuth, (req, res) => {
 				if (productNumber == product.productNumber) {
 					console.log("Duplicate product found for user");
 					isDuplicate = true;
-					res.status(400).json({ success: false, message: 'Duplicate URL entered' });
+					res.status(400).json({ success: false, message: 'You have already added this product' });
 					break;
 				}
 			}
@@ -126,7 +125,7 @@ router.route('/products').post(isAuth, (req, res) => {
 									res.status(500).json({ success: false, message: 'Product could not be saved' });
 								} else {
 									console.log(success);
-									res.status(200).json({ success: true, message: 'Product has been added' });
+									res.status(200).json({ success: true, message: 'Your product has been added' });
 								}
 							}
 						);
@@ -175,8 +174,8 @@ router.route('/products').get(isAuth, (req, res) => {
  * @param {boolean} onSpecial 
  */
 const filter = (products, name, onSpecial) => {
-	console.log("Filtering:")
-  console.log(JSON.stringify(products))
+	// console.log("Filtering:")
+  // console.log(JSON.stringify(products))
 	const matches = products.filter((product) => {
 		let c1 = true,
 				c2 = true;
@@ -208,22 +207,22 @@ const paginate = (products, page) => {
 // Test route for user products
 router.route('/productsPage').get((req, res) => {
   let { page, name, onSpecial } = req.query;
-	console.log(`Params: ${JSON.stringify(req.params)}`)
-	console.log(`Query: ${JSON.stringify(req.query)}`)
-	console.log(`Body: ${JSON.stringify(req.body)}`)
+	// console.log(`Params: ${JSON.stringify(req.params)}`)
+	// console.log(`Query: ${JSON.stringify(req.query)}`)
+	// console.log(`Body: ${JSON.stringify(req.body)}`)
 
-	console.log(`Page: ${page} (${typeof page})`);
-	console.log(`Name: ${name} (${typeof name})`);
-	console.log(`On Special: ${onSpecial} (${typeof onSpecial})`);
+	// console.log(`Page: ${page} (${typeof page})`);
+	// console.log(`Name: ${name} (${typeof name})`);
+	// console.log(`On Special: ${onSpecial} (${typeof onSpecial})`);
 
 	User.findById(req.user._id)
 		.then((user) => {
 			const filtered = filter(user.products, name, onSpecial);
 			const pageProducts = paginate(filtered, page);
-			console.log('Filtered:')
-			console.log(JSON.stringify(filtered));
-			console.log('Page Products:');
-      console.log(JSON.stringify(pageProducts));
+			// console.log('Filtered:')
+			// console.log(JSON.stringify(filtered));
+			// console.log('Page Products:');
+      // console.log(JSON.stringify(pageProducts));
 
 			res.status(200).json({
 				success: true,

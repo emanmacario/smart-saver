@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
 
 import AddProductForm from './AddProductForm';
+import AlertDismissible from './AlertDismissible';
 import Product from './Product';
 import ProductsPagination from './ProductsPagination';
 import SearchForm from './SearchForm';
 import useFetchProducts from './useFetchProducts';
 
 import axios from 'axios';
-import { Container, Spinner } from 'react-bootstrap';
+import { Alert, Container, Spinner } from 'react-bootstrap';
 
 
 function ViewProducts() {
   const [params, setParams] = useState({}); // useState({ name: '', onSpecial: false });
   const [page, setPage] = useState(1);
   const [changed, setChanged] = useState(false);
+  const [variant, setVariant] = useState(null);
+  const [show, setShow] = useState(false);
+  const [message, setMessage] = useState(null);
   const { products, loading, error, hasNextPage } = useFetchProducts(params, page, changed);
 
   /**
@@ -50,17 +54,50 @@ function ViewProducts() {
   }
 
   /**
-   * Handles addition of product by the user
+   * Handles addition of a product by the user
+   * @param {event} event 
+   * @param {string} productUrl 
    */
-  const handleAdd = () => {
-    setChanged(!changed);
-    setPage(1);
+  const handleAdd = (event, productUrl) => {
+    event.preventDefault();
+    axios.post('http://localhost:5000/users/products', { 
+        url: productUrl 
+    }, { 
+        withCredentials: true 
+    })
+    .then((res) => {
+        console.log(res.status);
+        console.log(res.data);
+        setChanged(!changed);
+        setPage(1);
+
+        if (res.status == 200) {
+          setVariant("success");
+          setShow(true);
+          setMessage(res.data.message);
+        }
+    })
+    .catch((err) => {
+      console.log(err);
+      if (err.response) {
+        console.log(err.response.data);
+        console.log(err.response.status);
+        if (err.response.status == 400 || err.response.status == 500) {
+          console.log("SHOULD SHOW ALERT");
+          setVariant("danger");
+          setShow(true);
+          setMessage(err.response.data.message);
+        }
+      }
+    });
   }
 
   return (
     <Container className="my-4">
       <h3>Add Product</h3>
-      <AddProductForm setChanged={setChanged} />
+      <AddProductForm onAdd={handleAdd} />
+      {show && <AlertDismissible variant={variant} message={message} show={show} setShow={setShow} />}
+      
       <div className="row my-2">
         <div className="col">
           <h3>Search</h3>
@@ -72,8 +109,6 @@ function ViewProducts() {
 
       <h3>My Products</h3>
       <ProductsPagination page={page} setPage={setPage} hasNextPage={hasNextPage} />
-      {console.log(`Products: ${JSON.stringify(products)}`)}
-      {console.log(`Has Next Page: ${hasNextPage}`)}
       {loading && <div><Spinner as="span" animation="border"/><h4>Loading...</h4></div>}
       {products.map(product => {
         return <Product key={product.productNumber} product={product} handleRemove={handleRemove} />

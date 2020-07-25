@@ -3,32 +3,9 @@ import { Button, Col, Form, InputGroup, FormControl } from 'react-bootstrap';
 import axios from 'axios';
 
 
-function AddProductForm({ setChanged }) {
+function AddProductForm({ onAdd }) {
   const [productUrl, setProductUrl] = useState('');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log('Submitted URL: ' + productUrl);
-
-    axios.post('http://localhost:5000/users/products', { 
-        url: productUrl 
-    }, { 
-        withCredentials: true 
-    })
-    .then((res) => {
-        console.log(res.status);
-        console.log(res.data);
-        setChanged(prevChanged => !prevChanged);
-        setProductUrl('');
-    })
-    .catch((err) => {
-      console.log(err);
-      if (err.response) {
-        console.log(err.response.data);
-        console.log(err.response.status);
-      }
-    });
-  }
   
   return (
     <Form className="mb-4">
@@ -48,7 +25,7 @@ function AddProductForm({ setChanged }) {
             className="my-2"
             variant="primary"
             type="submit" 
-            onClick={handleSubmit}>
+            onClick={(event) => onAdd(event, productUrl)}>
             Add
           </Button>
         </Col>
@@ -77,7 +54,7 @@ function AddProductForm({ setChanged }) {
           <Button 
             variant="primary" 
             type="submit" 
-            onClick={handleSubmit}>
+            onClick={onAdd}>
             Add
           </Button>
         </Col>

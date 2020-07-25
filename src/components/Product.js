@@ -22,17 +22,17 @@ function Product({ product, handleRemove }) {
             <Card.Subtitle className="text-muted mb2">
               {product.description}
             </Card.Subtitle>
-            {product.onSpecial ? <h4><Badge variant="success" className="my-2">Special</Badge></h4>
-                               : <h4><Badge variant="secondary" className="my-2">Normal Price</Badge></h4>}
-            <Card.Text as="h5" className="font-weight-normal text-muted mb-2">
-              Previous: ${product.prevPrice.toFixed(2)}
+            {product.onSpecial && <h4><Badge variant="success" className="my-2">Special</Badge></h4>}
+            {!product.onSpecial && <h4><Badge variant="secondary" className="my-2">Normal Price</Badge></h4>}
+            <Card.Text as="h5" className="font-weight-normal mb-2">
+              Now ${product.price.toFixed(2)}
             </Card.Text>
-            <Card.Text as="h5" className="font-weight-normal text-muted mb-4">
-              Current: ${product.price.toFixed(2)}
+            <Card.Text as="h6" className="font-weight-normal text-muted mb-4">
+              Was ${product.prevPrice.toFixed(2)}
             </Card.Text>
             <span>
               <Button 
-                variant="info" 
+                variant="outline-secondary" 
                 className="mr-2" 
                 onClick={() => setOpen(prevOpen => !prevOpen)}
               >
