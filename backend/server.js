@@ -30,22 +30,22 @@ app.use(express.urlencoded({ extended: true }));
 const sessionStore = new MongoStore({ mongooseConnection: connection, collection: 'sessions' });
 
 app.use(session({
-	secret: process.env.SECRET,
-	resave: false,
-	saveUninitialized: true,
-	store: sessionStore,
-	cookie: {
-		secure: false,
-		maxAge: 1000 * 60 * 60 * 24  // Equals one day
-	}
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: true,
+  store: sessionStore,
+  cookie: {
+    secure: false,
+    maxAge: 1000 * 60 * 60 * 24  // Equals one day
+  }
 }));
 
 // Set headers for CORS
 app.use(function(req, res, next) {
-	res.header('Access-Control-Allow-Origin', process.env.ORIGIN);
-	res.header('Access-Control-Allow-Credentials', true);
-	res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-	next();
+  res.header('Access-Control-Allow-Origin', process.env.ORIGIN);
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
 });
 
 // Passport authentication
@@ -55,9 +55,9 @@ app.use(passport.session());
 
 // Debugging middleware
 app.use((req, res, next) => {
-	// console.log(req.session);
-	// console.log(req.user);
-	next();
+  // console.log(req.session);
+  // console.log(req.user);
+  next();
 });
 
 
@@ -77,5 +77,5 @@ app.use('/products', productRouter);
 
 // Server setup
 app.listen(port, () => {
-	console.log(`Server is running on port: ${port}`);
+  console.log(`Server is running on port: ${port}`);
 });
