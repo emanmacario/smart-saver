@@ -1,5 +1,4 @@
-import React, { useState, useContext } from 'react';
-import { UserContext } from '../contexts/UserContext';
+import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
@@ -37,35 +36,46 @@ function Login(props) {
   }
 
   return (
-    <div className="login" style={styles.signUp}>
-      <h1 style={styles.h1}>Log In</h1>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formBasicUsername">
-          <Form.Label>Username</Form.Label>
-          <Form.Control 
-            required 
-            type="text" 
-            placeholder="Enter username" 
-            onChange={(e) => setUsername(e.target.value)}/>
-        </Form.Group>
 
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control 
-            required 
-            type="password" 
-            placeholder="Enter password"
-            onChange={(e) => setPassword(e.target.value)} />
-        </Form.Group>
+    <div className="container-fluid d-flex justify-content-center">
+      <div className='col-md-4 p-5 mt-5 rounded shadow'>
+        <h4 className="mb-4">Sign In</h4>
+        <div className="mt-4 py-4">
+          <hr className="mb-4" />
+          <Form onSubmit={handleSubmit}>
+            <Form.Group>
+              <Form.Label>Username</Form.Label>
+              <Form.Control 
+                required 
+                type="text" 
+                placeholder="Enter username" 
+                onChange={(event) => setUsername(event.target.value)}/>
+            </Form.Group>
 
-        <Button 
-          className="float-right" 
-          variant="primary" 
-          type="submit">
-          Login
-        </Button>
-      </Form>
+            <Form.Group>
+              <Form.Label>Password</Form.Label>
+              <Form.Control 
+                required 
+                type="password" 
+                placeholder="Enter password"
+                onChange={(event) => setPassword(event.target.value)} />
+            </Form.Group>
+
+            <Form.Group className="d-flex justify-content-end my-4">
+              <Button
+                variant="primary" 
+                type="submit">
+                Login
+              </Button>
+            </Form.Group>
+          </Form>
+        </div>
+        
+      </div>
     </div>
+    
+    
+    
   )
 }
 

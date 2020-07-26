@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const axios = require('axios').default;
-const bcrypt = require('bcrypt');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const isAuth = require('./authMiddleware');
@@ -196,7 +195,7 @@ const filter = (products, name, onSpecial) => {
  * @param {number} page 
  */
 const paginate = (products, page) => {
-	const PRODUCTS_PER_PAGE = 2;
+	const PRODUCTS_PER_PAGE = 5;
 	const firstIndex = (page - 1) * PRODUCTS_PER_PAGE;
 	const secondIndex = firstIndex + PRODUCTS_PER_PAGE;
 	return products.slice(firstIndex, secondIndex)
@@ -207,22 +206,11 @@ const paginate = (products, page) => {
 // Test route for user products
 router.route('/productsPage').get((req, res) => {
   let { page, name, onSpecial } = req.query;
-	// console.log(`Params: ${JSON.stringify(req.params)}`)
-	// console.log(`Query: ${JSON.stringify(req.query)}`)
-	// console.log(`Body: ${JSON.stringify(req.body)}`)
-
-	// console.log(`Page: ${page} (${typeof page})`);
-	// console.log(`Name: ${name} (${typeof name})`);
-	// console.log(`On Special: ${onSpecial} (${typeof onSpecial})`);
 
 	User.findById(req.user._id)
 		.then((user) => {
 			const filtered = filter(user.products, name, onSpecial);
 			const pageProducts = paginate(filtered, page);
-			// console.log('Filtered:')
-			// console.log(JSON.stringify(filtered));
-			// console.log('Page Products:');
-      // console.log(JSON.stringify(pageProducts));
 
 			res.status(200).json({
 				success: true,

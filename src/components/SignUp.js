@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { UserContext } from '../contexts/UserContext';
+import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
@@ -7,94 +7,88 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function SignUp(props) {
-  const [validated, setValidated] = useState(false);
   const [username, setUsername] = useState(null);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+  const [redirectPath, setRedirectPath] = useState(null);
 
   const handleSubmit = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-
-    setValidated(true);
-
-    const user = {
-      username: username,
-      email: email,
-      password: password
-    }
-
-    console.log(`Username: ${username}`);
-    console.log(`Email: ${email}`);
-    console.log(`Password: ${password}`);
+    event.preventDefault()
+    console.log("Handling signup submit");
     
-    axios.post('http://localhost:5000/users/register', user)
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    axios.post('http://localhost:5000/users/register/', {
+      username: username,
+      password: password,
+      email: email
+    }, {
+      withCredentials: true,
+    })
+    .then((res) => {
+      console.log("Sign up response: ")
+      console.log(res);
+
+      if (res.status === 200) {
+        setRedirectPath('/login');
+      }
+    })
+    .catch((err) => {
+      console.log(`Login error: ${err}`);
+    })
   }
 
+  // Redirect to login page on sign up completion
+  if (redirectPath) {
+    return <Redirect to={{ pathname: redirectPath }} />
+  } 
+
   return (
-    <div className="signUp" style={styles.signUp}>
-      <h1 style={styles.h1}>Create Account</h1>
-      <Form noValidate validate={validated} onSubmit={handleSubmit}>
-        <Form.Group controlId="formBasicUsername">
+    <div className="signup" style={styles.signup}>
+      <h4>Create Account</h4>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group controlId="username">
           <Form.Label>Username</Form.Label>
           <Form.Control 
             required
-            type="text"
-            placeholder="Enter username"
+            type="text" 
+            placeholder="Enter username" 
             onChange={(e) => setUsername(e.target.value)}/>
-          <Form.Control.Feedback>
-            Looks good!
-          </Form.Control.Feedback>
-          <Form.Control.Feedback type="invalid">
-            Please enter a username
-          </Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group controlId="formBasicEmail">
+        <Form.Group controlId="email">
           <Form.Label>Email address</Form.Label>
           <Form.Control 
-            required
-            type="email"
-            placeholder="Enter email" 
+            required 
+            type="email" 
+            placeholder="Enter email"
             onChange={(e) => setEmail(e.target.value)}/>
           <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
+          We'll never share your email with anyone else.
           </Form.Text>
-          <Form.Control.Feedback type="invalid">
-            Please enter a valid email address
-          </Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group controlId="formBasicPassword">
+        <Form.Group controlId="password">
           <Form.Label>Password</Form.Label>
-          <Form.Control
-            required
+          <Form.Control 
+            required 
             type="password"
-            placeholder="Enter password"
-            onChange={(e) => setPassword(e.target.value)} />
-          <Form.Control.Feedback type="invalid">
-            Please enter a valid email address
-          </Form.Control.Feedback>
+            placeholder="Password" 
+            onChange={(e) => setPassword(e.target.value)}/>
         </Form.Group>
-        <Button className="float-right" variant="primary" type="submit">
-          Sign up
+
+        <Button 
+          className="float-right" 
+          variant="primary" 
+          type="submit">
+          Submit
         </Button>
       </Form>
     </div>
+    
   )
 }
 
 const styles = {
-  signUp: {
+  signup: {
     width: "33%",
     padding: "1.5em",
     borderRadius: "10%",
@@ -106,5 +100,6 @@ const styles = {
     fontSize: "24px",
   }
 };
+
 
 export default SignUp;

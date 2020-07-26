@@ -1,141 +1,127 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom';
+import { Button, Form, Navbar, Nav } from 'react-bootstrap';
 import axios from 'axios';
-import { BrowserRouter as Router, Route, Link, useHistory, Redirect } from 'react-router-dom';
-
-// React Bootstrap components
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl';
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-
-// Application components
-import SignUp from './components/SignUp';
-import Login from './components/Login';
 import Home from './components/Home';
+import Login from './components/Login';
+import SignUp from './components/SignUp';
 import ViewProducts from './components/ViewProducts';
-
-// DEBUGGING
-import SignUpClean from './components/SignUpClean';
 
 
 function App(props) {
-	const [isAuth, setIsAuth] = useState(false);
-	const [username, setUsername] = useState(null);
+  const [isAuth, setIsAuth] = useState(false);
+  const [username, setUsername] = useState(null);
 
-	useEffect(() => {
-		console.log("=== APP MOUNTING ===");
-		console.log(`isAuth: ${isAuth}`);
+  useEffect(() => {
+    console.log(`User authenticated: ${isAuth}`);
 
-		axios.get('http://localhost:5000/users/', { withCredentials: true })
-			.then((res) => {
-				console.log("GET /users/ response: ")
-				console.log(res.data);
-				if (res.data.user) {
-					console.log("There is a user saved in a server session");
-					setIsAuth(true);
-					//useHistory().push('/viewProducts');
-					setUsername(res.data.user.username);
+    axios.get('http://localhost:5000/users/', { 
+      withCredentials: true 
+    })
+    .then((res) => {
+      console.log("GET /users/ response: ")
+      console.log(res.data);
+      if (res.data.user) {
+        console.log("User session found");
+        setIsAuth(true);
+        setUsername(res.data.user.username);
+      } else {
+        console.log("User session not found");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  });
+  
+  const logout = (event) => {
+    event.preventDefault();
+    console.log("Logging out");
+    axios.get('http://localhost:5000/users/logout/', { 
+      withCredentials: true 
+    })
+    .then((res) => {
+      console.log('GET /users/logout/ response:')
+      console.log(res.data);
+      if (res.status === 200) {
+        setIsAuth(false);
+        setUsername(null);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
 
-				} else {
-					console.log("There is no user saved in a session");
-					//setIsAuth(false);
-					//setUsername(null);
-				}
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	});
-	
-	const logout = (event) => {
-		event.preventDefault();
-		console.log("Logging out!");
-		axios.get('http://localhost:5000/users/logout/', { withCredentials: true })
-			.then((res) => {
-				console.log('GET /users/logout/ response:')
-				console.log(res.data);
-				if (res.status === 200) {
-					setIsAuth(false);
-					setUsername(null);
-				}
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	}
+  return (
+    <Router>
+      <Navbar style={styles.nav} className="fixed-top border-bottom shadow" variant="dark" expand="lg">
+        <Navbar.Brand className="mx-2" as={Link} to="/">Smart Saver</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          { isAuth ? (
+              <Nav className="mr-auto">
+                <Nav.Link className="mx-2" as={Link} to="/viewProducts">Products</Nav.Link>
+                <Form inline>
+                  <Button className="ml-auto" variant="outline-light" onClick={logout}>Logout</Button>
+                </Form>
+              </Nav>
+              
+          ) : (
+              <Nav className="ml-auto">
+                <Nav.Link as={Link} to="/signup">Create Account</Nav.Link>
+                <Nav.Link className="mx-5" as={Link} to="/login">Log In</Nav.Link>
+              </Nav>
+            )
+          }
+        </Navbar.Collapse>
+      </Navbar>
 
-
-	return (
-		<Router>
-			<Container>
-				<Navbar bg="light" expand="lg">
-					<Navbar.Brand as={Link} to="/">Smart Saver</Navbar.Brand>
-					<Navbar.Toggle aria-controls="basic-navbar-nav" />
-					<Navbar.Collapse id="basic-navbar-nav">
-						{ isAuth ? (
-								<Nav className="mr-auto">
-									<Nav.Link as={Link} to="/viewProducts">Products</Nav.Link>
-									<Form inline>
-										<Button variant="outline-secondary" onClick={logout}>Logout</Button>
-									</Form>
-								</Nav>
-								
-						) : (
-								<Nav className="mr-auto">
-									<Nav.Link as={Link} to="/signup">Create Account</Nav.Link>
-									<Nav.Link as={Link} to="/login">Log In</Nav.Link>
-								</Nav>
-							)
-						}
-					</Navbar.Collapse>
-				</Navbar>
-			</Container>
-			<h1 style={styles.h1}>Woolies Smart Saver</h1>
-			<p className="text-muted" style={styles.p}>Automatic notification of sales on your favourite Woolworths products</p>
-
-			<Route path="/" exact component={Home} />
-			<Route path="/signup" exact render={() => (
+      <Route path="/" exact component={Home} />
+      <Route path="/signup" exact render={() => (
                 isAuth ? (
                     <Redirect to="/viewProducts" />
                 ) : (
-                    <SignUpClean />
+                    <SignUp />
                 )
             )} />
-            <Route path="/login" exact render={(props) => (
-                isAuth ? (
-                    <Redirect to="/viewProducts"/>
-                ) : (
-                    <Login {...props} setIsAuth={setIsAuth} />
-                )
-            )} />
-			<Route path="/viewProducts" render={() => (
-				isAuth ? (
+      <Route path="/login" exact render={(props) => (
+          isAuth ? (
+              <Redirect to="/viewProducts"/>
+          ) : (
+              <Login {...props} setIsAuth={setIsAuth} />
+          )
+      )} />
+      <Route path="/viewProducts" render={() => (
+        isAuth ? (
                     <ViewProducts />
-				) : (
-					<Redirect to='/login'/>
-				)
-			)} />
-		</Router>
-  	);
+        ) : (
+          <Redirect to='/login'/>
+        )
+      )} />
+    </Router>
+    );
 }
 
 const styles = {
-	h1: {
-		fontFamily: "Roboto, sans-serif",
-		fontSize: "40px",
-		fontWeight: "normal",
-		textAlign: "center",
-		margin: "40px"
-	},
+  h1: {
+    fontFamily: "Roboto, sans-serif",
+    fontSize: "40px",
+    fontWeight: "normal",
+    textAlign: "center",
+    margin: "40px"
+  },
 
-	p: {
-		fontFamily: "Roboto, sans-serif",
-		fontSize: "24px",
-		textAlign: "center",
-		margin: "20px",
-	}
+  p: {
+    fontFamily: "Roboto, sans-serif",
+    fontSize: "24px",
+    textAlign: "center",
+    margin: "20px",
+  },
+  nav: {
+    backgroundColor: '#089cec',
+    boxShadow: '0 2px 2px -2px rgba(0,0,0,.2)'
+  }
 }
 
 export default App;

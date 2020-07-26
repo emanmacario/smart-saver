@@ -28,9 +28,6 @@ function reducer(state, action) {
 function useFetchProducts(params, page, changed) {
   const [state, dispatch] = useReducer(reducer, { products: [], loading: true });
 
-  // console.log(`Params: ${JSON.stringify(params)}`)
-  // console.log(`Page: ${page}`);
-
   useEffect(() => {
     const cancelTokenProducts = axios.CancelToken.source();
     dispatch({ type: ACTIONS.MAKE_REQUEST });
