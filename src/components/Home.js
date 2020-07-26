@@ -19,11 +19,10 @@ function Home() {
       </div>
 
       <hr className="my-0" />
-
-      <div className="bg-light mb-4 py-4">
+      <div className="bg-light mb-0 py-4">
         <h2 className="my-5 text-center">How it works - three simple steps</h2>
         <div className="container">
-          <div className="row">
+          <div className="row pb-4">
             <div className="col-md-4">
               <div className="my-4">
                 <FontAwesomeIcon icon={faUser} size="lg" />
@@ -54,10 +53,18 @@ function Home() {
           </div>
         </div>
       </div>
+      <hr className="my-0" />
+
+      <div className="mb-4 text-center">
+        <h2 className="my-5">Disclaimer</h2>
+        <h5 className="text-muted my-5 pb-5">
+          This website uses the Woolworths API but is not endorsed or certified by Woolworths
+        </h5>
+      </div>
 
 
 
-      <div role="navigation">
+      <div className="pt-5 mt-5" role="navigation">
         <div className="navbar fixed-bottom navbar-dark bg-dark">
           <p className="d-flex justify-content-end navbar-brand mb-0">Made by Emmanuel Macario</p>
         </div>
