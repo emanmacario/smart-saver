@@ -3,10 +3,9 @@ import { Redirect } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-function SignUp(props) {
+function SignUp() {
   const [username, setUsername] = useState(null);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
@@ -42,64 +41,53 @@ function SignUp(props) {
   } 
 
   return (
-    <div className="signup" style={styles.signup}>
-      <h4>Create Account</h4>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="username">
-          <Form.Label>Username</Form.Label>
-          <Form.Control 
-            required
-            type="text" 
-            placeholder="Enter username" 
-            onChange={(e) => setUsername(e.target.value)}/>
-        </Form.Group>
+    <div className="container-fluid d-flex flex-column align-items-center">
+      <div className='col-md-3 p-5 mt-5 rounded shadow'>
+        <h4 className="mb-4">Sign Up</h4>
+        <div className="mt-4 py-4">
+          <hr className="mb-4" />
+          <Form onSubmit={handleSubmit}>
+            <Form.Group>
+              <Form.Label>Username</Form.Label>
+              <Form.Control 
+                required
+                type="text" 
+                placeholder="Enter username" 
+                onChange={(e) => setUsername(e.target.value)}/>
+            </Form.Group>
 
-        <Form.Group controlId="email">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control 
-            required 
-            type="email" 
-            placeholder="Enter email"
-            onChange={(e) => setEmail(e.target.value)}/>
-          <Form.Text className="text-muted">
-          We'll never share your email with anyone else.
-          </Form.Text>
-        </Form.Group>
+            <Form.Group>
+              <Form.Label>Email address</Form.Label>
+              <Form.Control 
+                required 
+                type="email" 
+                placeholder="Enter email"
+                onChange={(e) => setEmail(e.target.value)}/>
+              <Form.Text className="text-muted">
+              We'll never share your email with anyone else.
+              </Form.Text>
+            </Form.Group>
 
-        <Form.Group controlId="password">
-          <Form.Label>Password</Form.Label>
-          <Form.Control 
-            required 
-            type="password"
-            placeholder="Password" 
-            onChange={(e) => setPassword(e.target.value)}/>
-        </Form.Group>
+            <Form.Group>
+              <Form.Label>Password</Form.Label>
+              <Form.Control 
+                required 
+                type="password"
+                placeholder="Password" 
+                onChange={(e) => setPassword(e.target.value)}/>
+            </Form.Group>
 
-        <Button 
-          className="float-right" 
-          variant="primary" 
-          type="submit">
-          Submit
-        </Button>
-      </Form>
+            <Button 
+              className="float-right" 
+              variant="primary" 
+              type="submit">
+              Submit
+            </Button>
+          </Form>
+        </div>
+      </div>
     </div>
-    
   )
 }
-
-const styles = {
-  signup: {
-    width: "33%",
-    padding: "1.5em",
-    borderRadius: "10%",
-    backgroundColor: "rgba(255, 255, 255, 0.815)",
-    margin: "auto"
-  },
-
-  h1: {
-    fontSize: "24px",
-  }
-};
-
 
 export default SignUp;

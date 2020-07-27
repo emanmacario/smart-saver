@@ -293,6 +293,8 @@ const createProductObject = async (url) => {
 	console.log(`LargeImageFile: ${info['LargeImageFile']}`);
 	console.log(`InStoreSavingsAmount: ${info['InstoreSavingsAmount']}`);
 	*/
+	// TODO: Use destructuring and aliases to extract product details
+	// https://dmitripavlutin.com/javascript-object-destructuring/#:~:text=The%20object%20destructuring%20is%20a,the%20property%20doesn't%20exist.
 
 	const product = {
 		productNumber: getProductNumber(url),

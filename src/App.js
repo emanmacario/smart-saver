@@ -6,6 +6,7 @@ import Home from './components/Home';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import ViewProducts from './components/ViewProducts';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function App(props) {
@@ -60,7 +61,7 @@ function App(props) {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           { isAuth ? (
-              <Nav className="mr-auto">
+              <Nav>
                 <Nav.Link className="mx-2" as={Link} to="/viewProducts">Products</Nav.Link>
                 <Form inline>
                   <Button className="ml-auto" variant="outline-light" onClick={logout}>Logout</Button>
@@ -69,7 +70,7 @@ function App(props) {
               
           ) : (
               <Nav className="ml-auto">
-                <Nav.Link as={Link} to="/signup">Create Account</Nav.Link>
+                <Nav.Link as={Link} to="/signup">Sign Up</Nav.Link>
                 <Nav.Link className="mx-5" as={Link} to="/login">Log In</Nav.Link>
               </Nav>
             )

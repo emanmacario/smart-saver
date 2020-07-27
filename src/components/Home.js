@@ -3,13 +3,12 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingBasket } from '@fortawesome/free-solid-svg-icons';
 import { faEnvelope, faUser } from '@fortawesome/free-regular-svg-icons';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
 
 function Home() {
 
   return (
-    
-    <div className="container-fluid px-0">
-      {/* Top level fluid container */}
+    <div className="container-fluid d-flex flex-column px-0">
 
       <div className="px-0 py-5 mt-0 mb-5 text-center">
         <h1 style={styles.brandName} className="py-5">Smart Saver</h1>
@@ -21,11 +20,11 @@ function Home() {
       <hr className="my-0" />
       <div className="bg-light mb-0 py-4">
         <h2 className="my-5 text-center">How it works - three simple steps</h2>
-        <div className="container">
+        <div className="container pb-4">
           <div className="row pb-4">
             <div className="col-md-4">
               <div className="my-4">
-                <FontAwesomeIcon icon={faUser} size="lg" />
+                <FontAwesomeIcon icon={faUser} size="2x" />
               </div>
               <h4>Create an account</h4>
               <p className="text-muted">
@@ -34,7 +33,7 @@ function Home() {
             </div>
             <div className="col-md-4">
               <div className="my-4">
-                <FontAwesomeIcon icon={faShoppingBasket} size="lg" />
+                <FontAwesomeIcon icon={faShoppingBasket} size="2x" />
               </div>
               <h4>Add your products</h4>
               <p className="text-muted">
@@ -43,7 +42,7 @@ function Home() {
             </div>
             <div className="col-md-4">
               <div className="my-4">
-                <FontAwesomeIcon icon={faEnvelope} size="lg" />
+                <FontAwesomeIcon icon={faEnvelope} size="2x" />
               </div>
               <h4>Receive notifications</h4>
               <p className="text-muted">
@@ -54,22 +53,22 @@ function Home() {
         </div>
       </div>
       <hr className="my-0" />
-
+      
       <div className="mb-4 text-center">
         <h2 className="my-5">Disclaimer</h2>
-        <h5 className="text-muted my-5 pb-5">
+        <h5 className="text-muted my-5">
           This website uses the Woolworths API but is not endorsed or certified by Woolworths
         </h5>
       </div>
-
-
-
-      <div className="pt-5 mt-5" role="navigation">
-        <div className="navbar fixed-bottom navbar-dark bg-dark">
-          <p className="d-flex justify-content-end navbar-brand mb-0">Made by Emmanuel Macario</p>
+ 
+      <div className="mt-auto" role="navigation">
+        <div className="navbar sticky-bottom navbar-dark bg-dark">
+          <p className="ml-auto navbar-brand mb-0">Made by Emmanuel Macario</p>
+          <a style={{ color: 'inherit' }} href="https://github.com/emanmacario/smart-saver/">
+            <FontAwesomeIcon icon={faGithub} size="2x" />
+          </a>
         </div>
       </div>
-
     </div>
   )
 }
@@ -90,6 +89,5 @@ const styles = {
     fontSize: '32px'
   }
 }
-
 
 export default Home;
