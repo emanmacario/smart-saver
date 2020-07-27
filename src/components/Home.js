@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingBasket } from '@fortawesome/free-solid-svg-icons';
@@ -57,7 +57,7 @@ function Home() {
       <div className="mb-4 text-center">
         <h2 className="my-5">Disclaimer</h2>
         <h5 className="text-muted my-5">
-          This website uses the Woolworths API but is not endorsed or certified by Woolworths
+          This website uses the Woolworths API but is not affiliated with, endorsed or certified by Woolworths
         </h5>
       </div>
  

@@ -59,7 +59,7 @@ function Login({ setIsAuth, history }) {
                 placeholder="Enter password"
                 onChange={(event) => setPassword(event.target.value)} />
             </Form.Group>
-            <Form.Group className="d-flex justify-content-end my-4">
+            <Form.Group className="d-flex justify-content-end mt-4 pt-4">
               <Button
                 variant="primary" 
                 type="submit">

@@ -77,12 +77,13 @@ function SignUp() {
                 onChange={(e) => setPassword(e.target.value)}/>
             </Form.Group>
 
-            <Button 
-              className="float-right" 
-              variant="primary" 
-              type="submit">
-              Submit
-            </Button>
+            <Form.Group className="d-flex justify-content-end pt-4 mt-4">
+              <Button
+                variant="primary" 
+                type="submit">
+                Sign Up
+              </Button>
+            </Form.Group>
           </Form>
         </div>
       </div>
