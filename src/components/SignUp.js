@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import { Form, Button, Spinner } from 'react-bootstrap';
+import AlertDismissible from './AlertDismissible';
 import axios from 'axios';
 
 
@@ -11,9 +11,15 @@ function SignUp() {
   const [password, setPassword] = useState(null);
   const [redirectPath, setRedirectPath] = useState(null);
 
+  // UX feedback variables
+  const [show, setShow] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [variant, setVariant] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log("Handling signup submit");
+    setLoading(true);
     
     axios.post('http://localhost:5000/users/register/', {
       username: username,
@@ -23,15 +29,28 @@ function SignUp() {
       withCredentials: true,
     })
     .then((res) => {
-      console.log("Sign up response: ")
-      console.log(res);
-
+      setLoading(false);
+      console.log(JSON.stringify(res.data));
+      console.log(`Status: ${res.status}`);
       if (res.status === 200) {
-        setRedirectPath('/login');
+        setMessage(res.data.message);
+        setVariant('success');
+        setShow(true);
+        setTimeout(() => {
+          setRedirectPath('/login');
+        }, 1500);
       }
     })
     .catch((err) => {
-      console.log(`Login error: ${err}`);
+      setLoading(false);
+      
+      console.log(`Sign Up ${err}`);
+      if (err.response) {
+        console.log(err.response.data);
+        setMessage(err.response.data.message);
+        setVariant('danger');
+        setShow(true);
+      }
     })
   }
 
@@ -53,21 +72,19 @@ function SignUp() {
                 required
                 type="text" 
                 placeholder="Enter username" 
-                onChange={(e) => setUsername(e.target.value)}/>
+                onChange={(event) => setUsername(event.target.value)}/>
             </Form.Group>
-
             <Form.Group>
               <Form.Label>Email address</Form.Label>
               <Form.Control 
                 required 
                 type="email" 
                 placeholder="Enter email"
-                onChange={(e) => setEmail(e.target.value)}/>
+                onChange={(event) => setEmail(event.target.value)}/>
               <Form.Text className="text-muted">
               We'll never share your email with anyone else.
               </Form.Text>
             </Form.Group>
-
             <Form.Group>
               <Form.Label>Password</Form.Label>
               <Form.Control 
@@ -76,12 +93,19 @@ function SignUp() {
                 placeholder="Password" 
                 onChange={(e) => setPassword(e.target.value)}/>
             </Form.Group>
-
+            <AlertDismissible variant={variant} message={message} show={show} setShow={setShow} />
             <Form.Group className="d-flex justify-content-end pt-4 mt-4">
-              <Button
-                variant="primary" 
+            <Button
+                variant="primary"
+                disabled={loading}
                 type="submit">
-                Sign Up
+                {!loading ? 'Log In' : <Spinner
+                                        as="span"
+                                        animation="border"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                      />}
               </Button>
             </Form.Group>
           </Form>

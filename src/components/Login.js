@@ -1,38 +1,49 @@
 import React, { useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import { Button, Form, Spinner } from 'react-bootstrap';
+import AlertDismissible from './AlertDismissible';
 import axios from 'axios';
 
 
 function Login({ setIsAuth, history }) {
-  const [email, setEmail] = useState(null);
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
+  const [show, setShow] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [variant, setVariant] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setLoading(true);
+
     const user = {
-      email: email,
       username: username,
       password: password
     }
-
-    console.log(JSON.stringify(user));
     
     axios.post('http://localhost:5000/users/login', user, { 
       withCredentials: true 
     })
     .then((res) => {
-      console.log("Login response:")
-      console.log(res.data);
       if (res.status === 200) {
-        console.log("Res status is 200")
+        console.log('User logged in successfully');
+        setMessage('Logged in successfully');
+        setVariant('success');
+        setShow(true);
         setIsAuth(true);
+        setLoading(false);
         history.push('/viewProducts');
       }
     })
     .catch((err) => {
       console.log(err);
+      if (err.response) {
+        console.log(JSON.stringify(err.response.data));
+        setMessage(err.response.data.message);
+        setVariant('danger');
+        setShow(true);
+        setLoading(false);
+      }
     });
   }
 
@@ -59,16 +70,25 @@ function Login({ setIsAuth, history }) {
                 placeholder="Enter password"
                 onChange={(event) => setPassword(event.target.value)} />
             </Form.Group>
+            <AlertDismissible variant={variant} message={message} show={show} setShow={setShow} />
             <Form.Group className="d-flex justify-content-end mt-4 pt-4">
               <Button
-                variant="primary" 
+                variant="primary"
+                disabled={loading}
                 type="submit">
-                Login
+                {!loading ? 'Log In' : <Spinner
+                                        as="span"
+                                        animation="border"
+                                        size="sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                      />}
               </Button>
             </Form.Group>
           </Form>
         </div>
       </div>
+      
     </div>
   )
 }

@@ -31,17 +31,26 @@ router.route('/register').post((req, res) => {
 		password: password,
 		products: []
 	});
-	// DEBUGGING
-	console.log(newUser);
 
-	newUser.save()
-		.then(() => {
-			res.status(200).json({ success: true, message: 'User successfully created' });
+	// Check if username is available
+	User.findOne({ username: username })
+		.then((user) => {
+			// User with username already exists
+			if (user) {
+				return res.status(400).json({ success: false, message: 'Sorry, that username has already been taken' });
+			}
+			// Username is available, save new user
+			newUser.save()
+			.then(() => {
+				res.status(200).json({ success: true, message: 'Your account has successfully been created' });
+			})
+			.catch((err) => {
+				res.status(500).json({ success: false, message: 'Sorry, we could not create your account right now. Please try again!' });
+			});
 		})
-		.catch(err => {
+		.catch((err) => {
 			console.log(err);
-			res.status(400).json({ success: false, message: 'User could not be created' });
-		});
+		})
 });
 
 // User login endpoint
@@ -49,23 +58,20 @@ router.post('/login', (req, res, next) => {
 	passport.authenticate('local', (err, user, info) => {
 		console.log("Route login callback called");
 		if (err) {
-			res.status(500).json({ message: "Something went wrong authenticating the user" });
-			return;
+			return res.status(500).json({ success: false, message: "Something went wrong authenticating the user" });
 		}
 
 		if (!user) {
-			res.status(401).json(info);
-			return;
+			console.log("No user found");
+			return res.status(400).json({ success: false, message: "The details you have entered are invalid, please try again" })
 		}
 
 		// Save user in session
 		req.logIn(user, (err) => {
 			console.log("req.logIn was called!");
 			if (err) {
-				res.status(500).json({ message: "Session could not save user" });
-				return;
+				return res.status(500).json({ message: "Error saving user to session" });
 			}
-			console.log("Returning user, login successful");
 			res.status(200).json({ success: true, user: user });
 		});
 	})(req, res, next);
@@ -150,12 +156,7 @@ router.route('/products').get(isAuth, (req, res) => {
 
 	User.findById(req.user._id)
 		.then((user) => {
-
-			res.status(200).json({
-				success: true,
-				message: 'Products successfully retrieved',
-				products: user.products
-			});
+			res.status(200).json({ success: true, message: 'Products successfully retrieved', products: user.products });
 		})
 		.catch((err) => {
 			console.log(err);
@@ -223,7 +224,6 @@ router.route('/productsPage').get((req, res) => {
 			res.status(400).json({ success: false, message: 'User could not be found' });
 		});
 });
-
 
 
 router.route('/products/:productNumber').delete(isAuth, (req, res) => {
