@@ -26,8 +26,13 @@ function AuthNavbar({ setIsAuth }) {
   return (
     <nav style={styles.navBackground} className="navbar navbar-expand-sm fixed-top navbar-dark shadow">
       <Link style={styles.navBrand} className="navbar-brand ml-2" to='/'>Smart Saver</Link>
-      <ul class="navbar-nav ml-auto mr-4">
-        <li class="nav-item ">
+      <ul className="navbar-nav mr-auto">
+        <li className="nav-item ml-2">
+          <Link style={styles.navLink} className="nav-link" to='/products'>Products</Link>
+        </li>
+      </ul>
+      <ul className="navbar-nav">
+        <li className="nav-item mr-2">
           <button style={styles.navLogout} type="button" className="btn" onClick={logout}>
             Log Out
           </button>
@@ -50,6 +55,9 @@ const styles = {
     marginBottom: 0,
     outline: 0
   },
+  navLink: { 
+    fontSize: '1.2em', color: '#FFF' 
+  }
 }
 
 export default AuthNavbar;
