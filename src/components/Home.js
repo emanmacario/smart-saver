@@ -1,15 +1,17 @@
 import React from 'react';
 
+import BottomStickyNavbar from './BottomStickyNavbar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingBasket } from '@fortawesome/free-solid-svg-icons';
 import { faEnvelope, faUser } from '@fortawesome/free-regular-svg-icons';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
+
 
 function Home() {
 
   return (
     <div className="container-fluid d-flex flex-column px-0">
 
+      {/* Brand name and product description */}
       <div className="px-0 py-5 mt-0 mb-5 text-center">
         <h1 style={styles.brandName} className="py-5">Smart Saver</h1>
         <h5 style={styles.brandDescription} className="text-muted my-5 col-md-6 mx-auto">
@@ -17,6 +19,7 @@ function Home() {
         </h5>
       </div>
 
+      {/* Instructions section */}
       <hr className="my-0" />
       <div className="bg-light mb-0 py-4">
         <h2 className="my-5 text-center">How it works - three simple steps</h2>
@@ -54,21 +57,16 @@ function Home() {
       </div>
       <hr className="my-0" />
       
+      {/* Disclaimer section */}
       <div className="mb-4 text-center">
         <h2 className="my-5">Disclaimer</h2>
         <h5 className="text-muted my-5">
           This website uses the Woolworths API but is not affiliated with, endorsed or certified by Woolworths
         </h5>
       </div>
- 
-      <div className="mt-auto" role="navigation">
-        <div className="navbar sticky-bottom navbar-dark bg-dark">
-          <p className="ml-auto navbar-brand mb-0">Made by Emmanuel Macario</p>
-          <a style={{ color: 'inherit' }} href="https://github.com/emanmacario/smart-saver/" target='_blank' rel="noopener noreferrer">
-            <FontAwesomeIcon icon={faGithub} size="2x" />
-          </a>
-        </div>
-      </div>
+
+      {/* Bottom navigation bar */}
+      <BottomStickyNavbar />
     </div>
   )
 }
