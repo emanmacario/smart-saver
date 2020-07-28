@@ -64,7 +64,7 @@ function Home() {
       <div className="mt-auto" role="navigation">
         <div className="navbar sticky-bottom navbar-dark bg-dark">
           <p className="ml-auto navbar-brand mb-0">Made by Emmanuel Macario</p>
-          <a style={{ color: 'inherit' }} href="https://github.com/emanmacario/smart-saver/" target='_blank' >
+          <a style={{ color: 'inherit' }} href="https://github.com/emanmacario/smart-saver/" target='_blank' rel="noopener noreferrer">
             <FontAwesomeIcon icon={faGithub} size="2x" />
           </a>
         </div>
