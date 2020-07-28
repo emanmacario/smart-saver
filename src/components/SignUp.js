@@ -99,7 +99,7 @@ function SignUp() {
                 variant="primary"
                 disabled={loading}
                 type="submit">
-                {!loading ? 'Log In' : <Spinner
+                {!loading ? 'Sign Up' : <Spinner
                                         as="span"
                                         animation="border"
                                         size="sm"

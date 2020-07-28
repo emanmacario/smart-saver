@@ -9,7 +9,7 @@ import ViewProducts from './components/ViewProducts';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-function App(props) {
+function App() {
   const [isAuth, setIsAuth] = useState(false);
   const [username, setUsername] = useState(null);
 
@@ -62,7 +62,7 @@ function App(props) {
         <Navbar.Collapse id="basic-navbar-nav">
           { isAuth ? (
               <Nav>
-                <Nav.Link className="mx-2" as={Link} to="/viewProducts">Products</Nav.Link>
+                <Nav.Link className="mx-2" as={Link} to="/products">Products</Nav.Link>
                 <Form inline>
                   <Button className="ml-auto" variant="outline-light" onClick={logout}>Logout</Button>
                 </Form>
@@ -78,28 +78,16 @@ function App(props) {
         </Navbar.Collapse>
       </Navbar>
 
-      <Route path="/" exact component={Home} />
-      <Route path="/signup" exact render={() => (
-                isAuth ? (
-                    <Redirect to="/viewProducts" />
-                ) : (
-                    <SignUp />
-                )
-            )} />
-      <Route path="/login" exact render={(props) => (
-          isAuth ? (
-              <Redirect to="/viewProducts"/>
-          ) : (
-              <Login {...props} setIsAuth={setIsAuth} />
-          )
-      )} />
-      <Route path="/viewProducts" render={() => (
-        isAuth ? (
-                    <ViewProducts />
-        ) : (
-          <Redirect to='/login'/>
-        )
-      )} />
+      <Route exact path="/" component={Home} />
+      <Route exact path='/signup'>
+        {isAuth ? <Redirect to='/products' /> : <SignUp />}
+      </Route>
+      <Route exact path='/login'>
+        {isAuth ? <Redirect to='/products' /> : <Login setIsAuth={setIsAuth} />}
+      </Route>
+      <Route exact path='/products'>
+        {isAuth ? <ViewProducts /> : <Redirect to='/login' />}
+      </Route>
     </Router>
     );
 }

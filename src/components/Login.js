@@ -88,7 +88,6 @@ function Login({ setIsAuth, history }) {
           </Form>
         </div>
       </div>
-      
     </div>
   )
 }
