@@ -4,7 +4,7 @@ import AlertDismissible from './AlertDismissible';
 import axios from 'axios';
 
 
-function Login({ setIsAuth, history }) {
+function Login({ setIsAuth }) {
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   const [show, setShow] = useState(false);
@@ -30,9 +30,8 @@ function Login({ setIsAuth, history }) {
         setMessage('Logged in successfully');
         setVariant('success');
         setShow(true);
-        setIsAuth(true);
         setLoading(false);
-        history.push('/viewProducts');
+        setIsAuth(true);
       }
     })
     .catch((err) => {

@@ -64,7 +64,7 @@ function Home() {
       <div className="mt-auto" role="navigation">
         <div className="navbar sticky-bottom navbar-dark bg-dark">
           <p className="ml-auto navbar-brand mb-0">Made by Emmanuel Macario</p>
-          <a style={{ color: 'inherit' }} href="https://github.com/emanmacario/smart-saver/">
+          <a style={{ color: 'inherit' }} href="https://github.com/emanmacario/smart-saver/" target='_blank' >
             <FontAwesomeIcon icon={faGithub} size="2x" />
           </a>
         </div>
@@ -80,7 +80,7 @@ const styles = {
   },
 
   brandName: {
-    fontFamily: "'Noto Sans JP', sans-serif",
+    fontFamily: "'Noto Sans KR', sans-serif",
     fontSize: '64px',
     color: '#fea93c'
   },

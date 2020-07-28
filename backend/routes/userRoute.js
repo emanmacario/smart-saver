@@ -81,7 +81,7 @@ router.post('/login', (req, res, next) => {
 router.route('/logout').get((req, res) => {
   if (req.user) {
     req.logout();
-    res.json({ message: "User logged out" });
+    res.json({ message: "Logged user out" });
   } else {
     res.json({ message: "No user to log out" });
   }
