@@ -21,7 +21,7 @@ function Login({ setIsAuth }) {
       password: password
     }
     
-    axios.post('http://localhost:5000/users/login', user, { 
+    axios.post('/users/login', user, { 
       withCredentials: true 
     })
     .then((res) => {

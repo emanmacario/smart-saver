@@ -31,7 +31,7 @@ function useFetchProducts(params, page, changed) {
   useEffect(() => {
     const cancelTokenProducts = axios.CancelToken.source();
     dispatch({ type: ACTIONS.MAKE_REQUEST });
-    axios.get('http://localhost:5000/users/productsPage', { 
+    axios.get('/users/productsPage', { 
       withCredentials: true,
       cancelToken: cancelTokenProducts.cancelToken,
       params: { page: page, ...params }
@@ -47,7 +47,7 @@ function useFetchProducts(params, page, changed) {
     });
 
     const cancelTokenPages = axios.CancelToken.source();
-    axios.get('http://localhost:5000/users/productsPage', {
+    axios.get('/users/productsPage', {
       withCredentials: true,
       cancelToken: cancelTokenPages.token,
       params: { page: page + 1, ...params }

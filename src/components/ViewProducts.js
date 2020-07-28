@@ -42,7 +42,7 @@ function ViewProducts() {
   const handleRemove = (productNumber) => {
     setChanged(!changed);
     setPage(1);
-    axios.delete(`http://localhost:5000/users/products/${productNumber}`, {
+    axios.delete(`/users/products/${productNumber}`, {
       withCredentials: true
     })
     .then((res) => {
@@ -64,7 +64,7 @@ function ViewProducts() {
    */
   const handleAdd = (event, productUrl) => {
     event.preventDefault();
-    axios.post('http://localhost:5000/users/products', { 
+    axios.post('/users/products', { 
         url: productUrl 
     }, { 
         withCredentials: true 

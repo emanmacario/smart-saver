@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 function AuthNavbar({ setIsAuth }) {
@@ -7,7 +7,7 @@ function AuthNavbar({ setIsAuth }) {
   const logout = (event) => {
     event.preventDefault();
     console.log("Logging out");
-    axios.get('http://localhost:5000/users/logout/', { 
+    axios.get('/users/logout/', { 
       withCredentials: true 
     })
     .then((res) => {

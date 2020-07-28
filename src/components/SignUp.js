@@ -21,7 +21,7 @@ function SignUp() {
     event.preventDefault()
     setLoading(true);
     
-    axios.post('http://localhost:5000/users/register/', {
+    axios.post('/users/register/', {
       username: username,
       password: password,
       email: email

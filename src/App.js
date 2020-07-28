@@ -16,7 +16,7 @@ function App() {
   useEffect(() => {
     console.log(`User authenticated: ${isAuth}`);
 
-    axios.get('http://localhost:5000/users/', { 
+    axios.get('/users', { 
       withCredentials: true 
     })
     .then((res) => {
