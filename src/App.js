@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import AuthNavbar from './components/AuthNavbar';
 import UnauthNavbar from './components/UnauthNavbar';
@@ -7,7 +8,6 @@ import Home from './components/Home';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import ViewProducts from './components/ViewProducts';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function App() {
@@ -31,14 +31,16 @@ function App() {
     })
     .catch((err) => {
       console.log(err);
+
     });
-  });
+  }, []);
   
 
   return (
     <Router>
       {/* Navbar */}
       {isAuth ? <AuthNavbar setIsAuth={setIsAuth} /> : <UnauthNavbar />}
+      {/* {isLoading ? console.log("Hello World im loading") : console.log("NOT LOADING")} */}
 
       {/* Routes and respective components */}
       <Route exact path="/" component={Home} />

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Globally configure axios
 axios.defaults.baseURL = 'http://localhost:5000';
