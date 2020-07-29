@@ -3,9 +3,12 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+require('dotenv').config();
+
+console.log(`Backend URL: ${process.env.REACT_APP_SERVER}`);
 
 // Globally configure axios
-axios.defaults.baseURL = 'http://localhost:5000';
+axios.defaults.baseURL = process.env.REACT_APP_SERVER;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 ReactDOM.render(
