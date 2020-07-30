@@ -109,6 +109,7 @@ function ViewProducts() {
      
       <h3 className="mb-4">My Products</h3>
       {loading && <div className="mb-4 my-2 pb-4 spinner-grow text-secondary" role="status" />}
+      {error && <p>There was an error loading your products. Please refresh the page.</p>}
       {!loading && <ProductsPagination page={page} setPage={setPage} hasNextPage={hasNextPage} />}
       {products.map(product => {
         return <Product key={product.number} product={product} handleRemove={handleRemove} />

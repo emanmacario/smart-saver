@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
-import { Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import AuthNavbar from './components/AuthNavbar';
 import UnauthNavbar from './components/UnauthNavbar';
@@ -40,7 +39,6 @@ function App() {
     <Router>
       {/* Navbar */}
       {isAuth ? <AuthNavbar setIsAuth={setIsAuth} /> : <UnauthNavbar />}
-      {/* {isLoading ? console.log("Hello World im loading") : console.log("NOT LOADING")} */}
 
       {/* Routes and respective components */}
       <Route exact path="/" component={Home} />
