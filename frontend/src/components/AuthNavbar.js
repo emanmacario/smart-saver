@@ -24,7 +24,7 @@ function AuthNavbar({ setIsAuth }) {
   }
   
   return (
-    <nav style={styles.navBackground} className="navbar navbar-expand-sm fixed-top navbar-dark shadow">
+    <nav style={styles.navBackground} className="navbar navbar-expand-xs fixed-top navbar-dark shadow">
       <Link style={styles.navBrand} className="navbar-brand ml-2" to='/'>Smart Saver</Link>
       <ul className="navbar-nav mr-auto">
         <li className="nav-item ml-2">

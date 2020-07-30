@@ -23,7 +23,7 @@ function Home() {
       <hr className="my-0" />
       <div className="bg-light mb-0 py-4">
         <h2 className="my-5 text-center">How it works - three simple steps</h2>
-        <div className="container pb-4">
+        <div className="container pb-4 px-4">
           <div className="row pb-4">
             <div className="col-md-4">
               <div className="my-4">
@@ -60,7 +60,7 @@ function Home() {
       {/* Disclaimer section */}
       <div className="mb-4 text-center">
         <h2 className="my-5">Disclaimer</h2>
-        <h5 className="text-muted my-5">
+        <h5 className="text-muted my-5 px-4 mx-2">
           This website uses the Woolworths API but is not affiliated with, endorsed or certified by Woolworths
         </h5>
       </div>

@@ -61,9 +61,9 @@ function SignUp() {
 
   return (
     <div className="container-fluid d-flex flex-column align-items-center">
-      <div className='col-md-3 p-5 mt-5 rounded shadow'>
-        <h4 className="mb-4">Sign Up</h4>
-        <div className="mt-4 py-4">
+      <div className='col-sm-6 col-md-4 col-lg-4 col-xl-3 px-5 pt-5 mt-5 rounded shadow'>
+        <h4 className="mb-0">Sign Up</h4>
+        <div className="py-4">
           <hr className="mb-4" />
           <Form onSubmit={handleSubmit}>
             <Form.Group>
