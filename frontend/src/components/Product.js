@@ -58,13 +58,15 @@ function Product({ product, handleRemove }) {
             </span>
             <Collapse in={open}>
               <div className="mt-4 text-muted">
-                {product.lastOnSpecialStart && 
-                  <p>Last Special Start Date:&nbsp;
-                    {new Date(product.lastOnSpecialStart).toLocaleDateString('en-GB')}</p>}
-                {product.lastOnSpecialEnd && 
-                  <p>Last Special Start:&nbsp;
-                    {new Date(product.lastOnSpecialEnd).toLocaleDateString('en-GB')}</p>}
+                {!product.onSpecial &&
+                  <div>
+                    <p>Last Special Start Date:&nbsp;
+                      {product.lastOnSpecialStart ? new Date(product.lastOnSpecialStart).toLocaleDateString('en-GB') : 'Unknown'}</p>
+                    <p>Last Special End Date:&nbsp;
+                      {product.lastOnSpecialEnd ? new Date(product.lastOnSpecialEnd).toLocaleDateString('en-GB') : 'Unknown'}</p>
+                  </div>}
                 <p>Product URL: <a href={product.url}>{product.url}</a></p>
+                
               </div>
             </Collapse>
           </div>
