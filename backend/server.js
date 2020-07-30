@@ -5,43 +5,33 @@ const session = require('express-session');
 const passport = require('passport');
 const connection = require('./config/database');
 const MongoStore = require('connect-mongo')(session);
+const cron = require('node-cron');
 require('dotenv').config();
 
-
-// Trying Node CRON job for emails
-const cron = require('node-cron');
-
-
-// GENERAL SETUP
+// General set up
 const app = express();
 const port = process.env.PORT || 5000;
 
-
+// Middleware stack
 app.use(cors({ credentials: true, origin: process.env.ORIGIN }));
-//app.use(cors());
 app.use(express.json());
 app.use(boolParser());
 app.use(express.urlencoded({ extended: true }));
 
-
-
-
-// SESSIONS SETUP
-const sessionStore = new MongoStore({ mongooseConnection: connection, collection: 'sessions' });
-
+// Session set up
 app.use(session({
   secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
-  store: sessionStore,
+  store: new MongoStore({ mongooseConnection: connection, collection: 'sessions' }),
   cookie: {
     secure: false,
     maxAge: 1000 * 60 * 60 * 24  // Equals one day
   }
 }));
 
-// Set headers for CORS
-app.use(function(req, res, next) {
+// Set HTTP headers for CORS
+app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', process.env.ORIGIN);
   res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -53,25 +43,15 @@ require('./config/passport');
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Debugging middleware
-app.use((req, res, next) => {
-  // console.log(req.session);
-  // console.log(req.user);
-  next();
-});
-
-
 // Set routes
 const userRouter = require('./routes/userRoute');
 app.use('/users', userRouter);
 
-
-// Schedule CRON job
+// Schedule CRON job for user email notifications
+// Runs everyday at 6:30PM AEST, 30 minutes after
+// all user products are updated on MongoDB Realm
 const emailUsers = require('./realm/emailUsers');
-//cron.schedule('* * * * *', emailUsers);
-emailUsers();
-
-
+cron.schedule('30 20 * * *', emailUsers);
 
 // Server setup
 app.listen(port, () => {

@@ -56,19 +56,17 @@ router.route('/register').post((req, res) => {
 // User login endpoint
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
-    console.log("Route login callback called");
     if (err) {
       return res.status(500).json({ success: false, message: "Something went wrong authenticating the user" });
     }
 
     if (!user) {
-      console.log("No user found");
+      console.log("No user found when authenticating credentials with Passport");
       return res.status(400).json({ success: false, message: "The details you have entered are invalid, please try again" })
     }
 
     // Save user in session
     req.logIn(user, (err) => {
-      console.log("req.logIn was called!");
       if (err) {
         return res.status(500).json({ message: "Error saving user to session" });
       }
@@ -150,44 +148,6 @@ router.route('/products').post(isAuth, (req, res) => {
 });
 
 
-/**
- * Filters an array of user products to return
- * only the products that match the name and
- * onSpecial property values
- * @param {array} products 
- * @param {string} name 
- * @param {boolean} onSpecial 
- */
-const filter = (products, name, onSpecial) => {
-  // console.log("Filtering:")
-  // console.log(JSON.stringify(products))
-  const matches = products.filter((product) => {
-    let c1 = true,
-        c2 = true;
-    if (name) {
-      c1 = product.name.toLowerCase().includes(name.toLowerCase());
-    }
-    if (onSpecial) {
-      c2 = product.onSpecial;
-    }
-    return c1 && c2;
-  })
-  return matches
-}
-
-/**
- * 
- * @param {array} products 
- * @param {number} page 
- */
-const paginate = (products, page) => {
-  const PRODUCTS_PER_PAGE = 5;
-  const firstIndex = (page - 1) * PRODUCTS_PER_PAGE;
-  const secondIndex = firstIndex + PRODUCTS_PER_PAGE;
-  return products.slice(firstIndex, secondIndex)
-}
-
-
 // GET endpoint for user products
 router.route('/products').get(isAuth, (req, res) => {
   let { page, name, onSpecial } = req.query;
@@ -224,10 +184,43 @@ router.route('/products/:number').delete(isAuth, (req, res) => {
   );
 });
 
+/* --- Product Helper Functions --- */
 
-/* --- HELPER FUNCTIONS --- */
+/**
+ * Filters an array of user products to return
+ * only the products that match the name and
+ * onSpecial property values
+ * @param {array} products 
+ * @param {string} name 
+ * @param {boolean} onSpecial 
+ */
+const filter = (products, name, onSpecial) => {
+  const matches = products.filter((product) => {
+    let c1 = true,
+        c2 = true;
+    if (name) {
+      c1 = product.name.toLowerCase().includes(name.toLowerCase());
+    }
+    if (onSpecial) {
+      c2 = product.onSpecial;
+    }
+    return c1 && c2;
+  })
+  return matches
+}
 
-// TODO: Refactor helper functions into another file
+/**
+ * 
+ * @param {array} products 
+ * @param {number} page 
+ */
+const paginate = (products, page) => {
+  const PRODUCTS_PER_PAGE = 5;
+  const firstIndex = (page - 1) * PRODUCTS_PER_PAGE;
+  const secondIndex = firstIndex + PRODUCTS_PER_PAGE;
+  return products.slice(firstIndex, secondIndex)
+}
+
 
 // Check the validity of the Woolworths product URL 
 // before making a call to the Woolworths API
@@ -268,7 +261,7 @@ const createProductObject = async (url) => {
   const {
     Name: name,
     Description: description,
-    WasPrice: prevPrice,
+    InstoreWasPrice: prevPrice,
     InstorePrice: price,
     InstoreIsOnSpecial: onSpecial,
     LargeImageFile: imagePath,

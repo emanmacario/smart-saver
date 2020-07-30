@@ -4,6 +4,7 @@ require('dotenv').config();
 
 module.exports = () => {
 
+  // Create a gmail transporter
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -12,9 +13,13 @@ module.exports = () => {
     }
   });
   
+  /**
+   * Returns a HTML string representation of 
+   * a card containing product information
+   * @param {object} product 
+   */
   const getRow = (product) => {
     const src = product.imagePath.replace('large', 'small');
-
     return `<div class="card col-8 mb-3 shadow rounded">
               <div class="card-body">
                 <div class="d-flex justify-content-between">
@@ -33,6 +38,12 @@ module.exports = () => {
             </div>`;
   }
   
+  /**
+   * Returns a HTML string representation of
+   * multiple product cards containing product
+   * information
+   * @param {array} specials 
+   */
   const fill = (specials) => {
     var all = '';
     specials.forEach((special) => {
@@ -41,7 +52,13 @@ module.exports = () => {
     return all;
   }
   
-  // 
+  /**
+   * Returns a mail options object given
+   * a user and an array of their current
+   * specials
+   * @param {object} user 
+   * @param {array} specials 
+   */
   const getMailOptions = (user, specials) => {
     var mailOptions = {
       from: process.env.EMAIL,

@@ -8,8 +8,6 @@ const ACTIONS = {
   UPDATE_HAS_NEXT_PAGE: 'update-has-next-page'
 }
 
-// React live searching with axios: https://www.digitalocean.com/community/tutorials/react-live-search-with-axios
-
 function reducer(state, action) {
   switch (action.type) {
     case ACTIONS.MAKE_REQUEST:

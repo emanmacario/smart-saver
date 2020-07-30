@@ -4,7 +4,7 @@ const User = require('../models/userModel');
 
 
 const verifyCallback = (username, password, done) => {
-  console.log("=== VERIFY CALLBACK ===");
+  console.log('Attempting to authenticate user...');
   User.findOne({ username: username })
     .then((user) => {
       if (!user) {
@@ -29,26 +29,17 @@ const verifyCallback = (username, password, done) => {
 const strategy = new LocalStrategy(verifyCallback);
 passport.use(strategy);
 
-
 passport.serializeUser((user, done) => {
-  // console.log('*** serializeUser called, user: ')
-  // console.log(user) // the whole raw user object!
-  // console.log('---------')
   done(null, user.id);
 });
 
 passport.deserializeUser((userId, done) => {
-  // console.log('*** deserializeUser called')
   User.findById(userId)
     .then((user) => {
-      // console.log('USER:')
-      // console.log(user)
-      // console.log('--------------')
-      done(null, user);
+      const { _id, username, email } = user;
+      done(null, { _id, username, email });
     })
     .catch((err => {
-      // console.log("Error deserializing user");
-      // console.log('--------------')
       done(err);
     }));
 });
