@@ -12,40 +12,38 @@ const Schema = mongoose.Schema;
   7. Available in store (InstoreIsPurchasable)
 */
 
+
 // TODO: Change productNumber to number
 const productSchema = new Schema({
-  productNumber: { type: Number, required: true },
+  number: { 
+    type: Number, required: true 
+  },
   name: {
-    type: String,
-    required: true
+    type: String, required: true
+  },
+  url: {
+    type: String, required: true
   },
   description: {
-    type: String,
-    required: true
+    type: String, required: true
   },
   prevPrice: {
-    type: Number,
-    required: true
+    type: Number, required: true
   },
   price: {
-    type: Number,
-    required: true
+    type: Number, required: true
   },
   prevOnSpecial: {
-    type: Boolean,
-    required: true
+    type: Boolean, required: true
   },
   onSpecial: {
-    type: Boolean,
-    required: true
+    type: Boolean, required: true
   },
   imagePath: {
-    type: String,
-    required: true
+    type: String, required: true
   },
   savingsAmount: {
-    type: Number,
-    required: true
+    type: Number, required: true
   }
 });
 

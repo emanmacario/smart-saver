@@ -29,11 +29,11 @@ function useFetchProducts(params, page, changed) {
   const [state, dispatch] = useReducer(reducer, { products: [], loading: true });
 
   useEffect(() => {
-    const cancelTokenProducts = axios.CancelToken.source();
+    const tokenProducts = axios.CancelToken.source();
     dispatch({ type: ACTIONS.MAKE_REQUEST });
-    axios.get('/users/productsPage', { 
+    axios.get('/users/products', { 
       withCredentials: true,
-      cancelToken: cancelTokenProducts.cancelToken,
+      cancelToken: tokenProducts.cancelToken,
       params: { page: page, ...params }
     })
     .then(res => {
@@ -41,28 +41,30 @@ function useFetchProducts(params, page, changed) {
     })
     .catch(error => {
       if (axios.isCancel(error)) {
-        return;
+        return
       }
       dispatch({ type: ACTIONS.ERROR, payload: { error: error }})
     });
 
-    const cancelTokenPages = axios.CancelToken.source();
-    axios.get('/users/productsPage', {
+    const tokenPages = axios.CancelToken.source();
+    axios.get('/users/products', {
       withCredentials: true,
-      cancelToken: cancelTokenPages.token,
+      cancelToken: tokenPages.token,
       params: { page: page + 1, ...params }
     })
     .then(res => {
       dispatch({ type: ACTIONS.UPDATE_HAS_NEXT_PAGE, payload: { hasNextPage: res.data.products.length !== 0 } }) 
     })
     .catch(error => {
-      if (axios.isCancel(error)) return
+      if (axios.isCancel(error)) {
+        return
+      }
       dispatch({ type: ACTIONS.ERROR, payload: { error: error } }) 
     })
 
     return () => {
-      cancelTokenProducts.cancel();
-      cancelTokenPages.cancel();
+      tokenProducts.cancel();
+      tokenPages.cancel();
     }
   }, [params, page, changed]);
 

@@ -15,7 +15,7 @@ function Product({ product, handleRemove }) {
 
   return (
     <Card className="shadow mb-3 col-10">
-      <Card.Body>
+      <Card.Body className="pt-4">
         <div className="d-flex justify-content-between">
           <div className="col-8">
             <Card.Title>
@@ -24,8 +24,8 @@ function Product({ product, handleRemove }) {
             <Card.Subtitle className="text-muted mb2">
               {product.description}
             </Card.Subtitle>
-            {product.onSpecial && <h4><Badge variant="success" className="my-2">Special</Badge></h4>}
-            {!product.onSpecial && <h4><Badge variant="secondary" className="my-2">Normal Price</Badge></h4>}
+            {product.onSpecial && <h4 className="my-2"><Badge variant="success" className="my-2">Special</Badge></h4>}
+            {!product.onSpecial && <h4 className="my-2"><Badge variant="secondary" className="my-2">Normal Price</Badge></h4>}
             <Card.Text as="h5" className="font-weight-normal mb-2">
               Now ${product.price.toFixed(2)}
             </Card.Text>

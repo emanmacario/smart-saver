@@ -150,21 +150,6 @@ router.route('/products').post(isAuth, (req, res) => {
 });
 
 
-// Gets products for a user
-router.route('/products').get(isAuth, (req, res) => {
-  const PRODUCTS_PER_PAGE = 5;
-
-  User.findById(req.user._id)
-    .then((user) => {
-      res.status(200).json({ success: true, message: 'Products successfully retrieved', products: user.products });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(400).json({ success: false, message: 'User could not be found' });
-    });
-});
-
-
 /**
  * Filters an array of user products to return
  * only the products that match the name and
@@ -203,25 +188,19 @@ const paginate = (products, page) => {
 }
 
 
-
-// Test route for user products
-router.route('/productsPage').get((req, res) => {
+// GET endpoint for user products
+router.route('/products').get(isAuth, (req, res) => {
   let { page, name, onSpecial } = req.query;
 
   User.findById(req.user._id)
     .then((user) => {
       const filtered = filter(user.products, name, onSpecial);
-      const pageProducts = paginate(filtered, page);
-
-      res.status(200).json({
-        success: true,
-        message: 'Products successfully retrieved',
-        products: pageProducts
-      });
+      const products = paginate(filtered, page);
+      res.status(200).json({ success: true, message: 'Products successfully retrieved', products: products });
     })
     .catch((err) => {
       console.log(err);
-      res.status(400).json({ success: false, message: 'User could not be found' });
+      res.status(400).json({ success: false, message: 'Could not find user' });
     });
 });
 
@@ -278,8 +257,8 @@ const getProductInfo = async (url) => {
 
 // Create a product object that can be stored in the MongoDB database
 const createProductObject = async (url) => {
-  const res = await getProductInfo(url);
-  const info = res.data['Product'];
+  const response = await getProductInfo(url);
+  const info = response.data['Product'];
 
   // Sanity check to see if product actually exists
   if (!info) {

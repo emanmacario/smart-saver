@@ -8,7 +8,6 @@ import SearchForm from './SearchForm';
 import useFetchProducts from './useFetchProducts';
 
 import axios from 'axios';
-import { Container, Spinner } from 'react-bootstrap';
 
 
 function ViewProducts() {
@@ -40,14 +39,14 @@ function ViewProducts() {
    * @param {number} productNumber 
    */
   const handleRemove = (productNumber) => {
-    setChanged(!changed);
-    setPage(1);
     axios.delete(`/users/products/${productNumber}`, {
       withCredentials: true
     })
     .then((res) => {
       console.log(res.status);
       console.log(res.data);
+      setChanged(!changed);
+      setPage(1);
     })
     .catch((err) => {
       console.log(err);
@@ -95,29 +94,27 @@ function ViewProducts() {
   }
 
   return (
-    <Container className="my-4">
+    <div className="container my-4">
       <h3>Add Product</h3>
       <p>Add a product to your notification list</p>
       <AddProductForm onAdd={handleAdd} />
       {show && <AlertDismissible variant={variant} message={message} show={show} setShow={setShow} />}
       
       <div className="row my-2">
-        <div className="col">
+        <div className="col-6">
           <h3>Search</h3>
           <SearchForm params={params} onParamChange={handleParamChange} />
         </div>
-        <div className="col">
-        </div>
       </div>
      
-      <h3>My Products</h3>
-      <ProductsPagination page={page} setPage={setPage} hasNextPage={hasNextPage} />
-      {loading && <div><Spinner as="span" animation="border"/><h4>Loading...</h4></div>}
+      <h3 className="mb-4">My Products</h3>
+      {loading && <div className="mb-4 my-2 pb-4 spinner-grow text-secondary" role="status" />}
+      {!loading && <ProductsPagination page={page} setPage={setPage} hasNextPage={hasNextPage} />}
       {products.map(product => {
         return <Product key={product.productNumber} product={product} handleRemove={handleRemove} />
       })}
-      <ProductsPagination page={page} setPage={setPage} hasNextPage={hasNextPage} />
-    </Container>
+      {!loading && <ProductsPagination page={page} setPage={setPage} hasNextPage={hasNextPage} />}
+    </div>
   )
 }
 
