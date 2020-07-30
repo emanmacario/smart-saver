@@ -245,7 +245,8 @@ const getProductNumber = (url) => {
 const getProductData= async (url) => {
   const number = getProductNumber(url);
   const endpoint = `https://www.woolworths.com.au/apis/ui/product/detail/${number}`;
-  return await axios.get(endpoint);
+  const instance = axios.create();
+  return await instance.get(endpoint);
 }
 
 // Create a product object that can be stored in the MongoDB database
@@ -282,8 +283,6 @@ const createProductObject = async (url) => {
     lastOnSpecialStart: onSpecial ? new Date() : null,
     lastOnSpecialEnd: null
   }
-
-  console.log(JSON.stringify(product));
   return new Product(product);
 }
 
