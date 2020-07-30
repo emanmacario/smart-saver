@@ -63,9 +63,7 @@ app.use((req, res, next) => {
 
 // Set routes
 const userRouter = require('./routes/userRoute');
-const productRouter = require('./routes/productRoute');
 app.use('/users', userRouter);
-app.use('/products', productRouter);
 
 
 // Schedule CRON job

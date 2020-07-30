@@ -13,7 +13,6 @@ const Schema = mongoose.Schema;
 */
 
 
-// TODO: Change productNumber to number
 const productSchema = new Schema({
   number: { 
     type: Number, required: true 
@@ -44,6 +43,12 @@ const productSchema = new Schema({
   },
   savingsAmount: {
     type: Number, required: true
+  },
+  lastOnSpecialStart: {
+    type: Date, required: false
+  },
+  lastOnSpecialEnd: {
+    type: Date, required: false
   }
 });
 

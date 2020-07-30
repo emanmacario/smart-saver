@@ -36,10 +36,10 @@ function ViewProducts() {
 
   /**
    * Handles removal of a product by the user
-   * @param {number} productNumber 
+   * @param {number} number 
    */
-  const handleRemove = (productNumber) => {
-    axios.delete(`/users/products/${productNumber}`, {
+  const handleRemove = (number) => {
+    axios.delete(`/users/products/${number}`, {
       withCredentials: true
     })
     .then((res) => {
@@ -111,7 +111,7 @@ function ViewProducts() {
       {loading && <div className="mb-4 my-2 pb-4 spinner-grow text-secondary" role="status" />}
       {!loading && <ProductsPagination page={page} setPage={setPage} hasNextPage={hasNextPage} />}
       {products.map(product => {
-        return <Product key={product.productNumber} product={product} handleRemove={handleRemove} />
+        return <Product key={product.number} product={product} handleRemove={handleRemove} />
       })}
       {!loading && <ProductsPagination page={page} setPage={setPage} hasNextPage={hasNextPage} />}
     </div>

@@ -103,12 +103,12 @@ router.route('/products').post(isAuth, (req, res) => {
     .then(async (user) => {
 
       // Check if user has already added the product
-      const productNumber = getProductNumber(url);
-      console.log(`Product Number: ${productNumber}`);
+      const number = getProductNumber(url);
+      console.log(`Product Number: ${number}`);
       var isDuplicate = false;
 
       for (let product of user.products) {
-        if (productNumber == product.productNumber) {
+        if (number == product.number) {
           console.log("Duplicate product found for user");
           isDuplicate = true;
           res.status(400).json({ success: false, message: 'You have already added this product' });
@@ -205,13 +205,13 @@ router.route('/products').get(isAuth, (req, res) => {
 });
 
 
-router.route('/products/:productNumber').delete(isAuth, (req, res) => {
-  const { productNumber } = req.params;
-  console.log(`Trying to delete: ${productNumber}`);
+router.route('/products/:number').delete(isAuth, (req, res) => {
+  const { number } = req.params;
+  console.log(`Trying to delete: ${number}`);
 
   User.findOneAndUpdate(
     { _id: req.user._id },
-    { $pull: { products: { productNumber: productNumber } } },
+    { $pull: { products: { number: number } } },
     (err, success) => {
       if (err) {
         console.log(err);
@@ -248,43 +248,46 @@ const getProductNumber = (url) => {
 }
 
 // Obtain Woolworths product details, such as price, from 
-// the  publicly exposed Woolworths product API endpoint
-const getProductInfo = async (url) => {
-  const productNumber = getProductNumber(url);
-  const endpoint = `https://www.woolworths.com.au/apis/ui/product/detail/${productNumber}`;
+// the publicly exposed Woolworths product API endpoint
+const getProductData= async (url) => {
+  const number = getProductNumber(url);
+  const endpoint = `https://www.woolworths.com.au/apis/ui/product/detail/${number}`;
   return await axios.get(endpoint);
 }
 
 // Create a product object that can be stored in the MongoDB database
 const createProductObject = async (url) => {
-  const response = await getProductInfo(url);
-  const info = response.data['Product'];
+  const response = await getProductData(url);
+  const data = response.data['Product'];
 
   // Sanity check to see if product actually exists
-  if (!info) {
+  if (!data) {
     return null;
   }
-  /*
-  console.log(`Name: ${info['Name']}`);
-  console.log(`WasPrice: ${info['WasPrice']}`);
-  console.log(`InStorePrice: ${info['InstorePrice']}`);
-  console.log(`InStoreIsOnSpecial: ${info['InstoreIsOnSpecial']}`);
-  console.log(`LargeImageFile: ${info['LargeImageFile']}`);
-  console.log(`InStoreSavingsAmount: ${info['InstoreSavingsAmount']}`);
-  */
-  // TODO: Use destructuring and aliases to extract product details
-  // https://dmitripavlutin.com/javascript-object-destructuring/#:~:text=The%20object%20destructuring%20is%20a,the%20property%20doesn't%20exist.
+  
+  const {
+    Name: name,
+    Description: description,
+    WasPrice: prevPrice,
+    InstorePrice: price,
+    InstoreIsOnSpecial: onSpecial,
+    LargeImageFile: imagePath,
+    InstoreSavingsAmount: savingsAmount
+  } = data;
 
-  const product = {
-    productNumber: getProductNumber(url),
-    name: info['Name'],
-    description: info['Description'],
-    prevPrice: info['WasPrice'],
-    price: info['InstorePrice'],
+  const product = { 
+    name, 
+    number: getProductNumber(url),
+    url: url,
+    description, 
+    prevPrice, 
+    price,
     prevOnSpecial: false,
-    onSpecial: info['InstoreIsOnSpecial'],
-    imagePath: info['LargeImageFile'],
-    savingsAmount: info['InstoreSavingsAmount']
+    onSpecial, 
+    imagePath, 
+    savingsAmount,
+    lastOnSpecialStart: onSpecial ? new Date() : null,
+    lastOnSpecialEnd: null
   }
 
   console.log(JSON.stringify(product));

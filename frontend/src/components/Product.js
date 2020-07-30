@@ -2,16 +2,31 @@ import React, { useState } from 'react';
 import { Card, Badge, Button, Collapse } from 'react-bootstrap';
 
 function Product({ product, handleRemove }) {
-  const productNumber = product.productNumber;
   const [open, setOpen] = useState(false);
 
-  // For image, align-content-center and justify-content-end
-  // https://www.youtube.com/watch?v=qmPmwdshCMw&list=PL55RiY5tL51rLqH4-8LBVlUTIFF70dxhb&index=2
+  // JSX card elements
+  const specialBadge = (
+    <h4 className="my-2">
+      <Badge variant="success" className="my-2">Special</Badge>
+    </h4>
+  )
+  
+  const normalBadge = (
+    <h4 className="my-2">
+      <Badge variant="secondary" className="my-2">Normal Price</Badge>
+    </h4>
+  )
 
-  // CSS Flexbox: https://getbootstrap.com/docs/4.0/utilities/flex/
-  // Core UI Bootstrap 4.0 cards
-
-  // https://www.pair.com/support/kb/understanding-bootstraps-grid-system/#:~:text=A%20container%20is%20a%20%3Cdiv,page%20and%20from%20other%20containers.
+  const specialInfo = (
+    <div>
+      <Card.Text as="h5" className="font-weight-normal text-muted">
+        Was: ${product.prevPrice.toFixed(2)}
+      </Card.Text>
+      <Card.Text as="h5" className="font-weight-normal text-muted mb-4">
+        Save: ${product.savingsAmount.toFixed(2)}
+      </Card.Text>
+    </div>
+  )
 
   return (
     <Card className="shadow mb-3 col-10">
@@ -22,17 +37,14 @@ function Product({ product, handleRemove }) {
               {product.name}
             </Card.Title>
             <Card.Subtitle className="text-muted mb2">
-              {product.description}
+              {product.description.split('<br>').join(' ')}
             </Card.Subtitle>
-            {product.onSpecial && <h4 className="my-2"><Badge variant="success" className="my-2">Special</Badge></h4>}
-            {!product.onSpecial && <h4 className="my-2"><Badge variant="secondary" className="my-2">Normal Price</Badge></h4>}
-            <Card.Text as="h5" className="font-weight-normal mb-2">
-              Now ${product.price.toFixed(2)}
+            {product.onSpecial ? specialBadge : normalBadge}
+            <Card.Text as="h4" className="font-weight-normal mb-4">
+              Price: ${product.price.toFixed(2)}
             </Card.Text>
-            <Card.Text as="h6" className="font-weight-normal text-muted mb-4">
-              Was ${product.prevPrice.toFixed(2)}
-            </Card.Text>
-            <span>
+            {product.onSpecial && specialInfo}
+            <span >
               <Button 
                 variant="outline-secondary" 
                 className="mr-2" 
@@ -40,16 +52,19 @@ function Product({ product, handleRemove }) {
               >
                 {open ? 'Hide Details' : 'Product Details'}
               </Button>
-              <Button variant="danger" onClick={() => handleRemove(productNumber)}>
+              <Button variant="danger" onClick={() => handleRemove(product.number)}>
                 Remove
               </Button>
             </span>
             <Collapse in={open}>
-              <div className="mt-4">
-                <p>
-                  Description: hello world
-                  It is me
-                </p>
+              <div className="mt-4 text-muted">
+                {product.lastOnSpecialStart && 
+                  <p>Last Special Start Date:&nbsp;
+                    {new Date(product.lastOnSpecialStart).toLocaleDateString('en-GB')}</p>}
+                {product.lastOnSpecialEnd && 
+                  <p>Last Special Start:&nbsp;
+                    {new Date(product.lastOnSpecialEnd).toLocaleDateString('en-GB')}</p>}
+                <p>Product URL: <a href={product.url}>{product.url}</a></p>
               </div>
             </Collapse>
           </div>
