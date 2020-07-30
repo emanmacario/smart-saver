@@ -246,7 +246,7 @@ const getProductData= async (url) => {
   const number = getProductNumber(url);
   const endpoint = `https://www.woolworths.com.au/apis/ui/product/detail/${number}`;
   const instance = axios.create();
-  return await instance.get(endpoint);
+  return await instance.get(endpoint, { headers: { 'X-Requested-With': 'XMLHttpRequest' }});
 }
 
 // Create a product object that can be stored in the MongoDB database
