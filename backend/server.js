@@ -67,9 +67,9 @@ app.use('/users', userRouter);
 
 
 // Schedule CRON job
-// const emailUsers = require('./realm/emailUsers');
+const emailUsers = require('./realm/emailUsers');
 //cron.schedule('* * * * *', emailUsers);
-// emailUsers();
+emailUsers();
 
 
 

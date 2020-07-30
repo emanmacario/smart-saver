@@ -3,12 +3,7 @@ const User = require('../models/userModel');
 require('dotenv').config();
 
 module.exports = () => {
-  /*
-  const mongodbAtlas = context.services.get("mongodb-atlas");
-  const users = mongodbAtlas.db("WooliesSmartSaver").collection("users");
-  const nodemailer = require("nodemailer");
-  */
-  
+
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -18,7 +13,24 @@ module.exports = () => {
   });
   
   const getRow = (product) => {
-    return `<p>${product.name} previously $${product.prevPrice} now $${product.price}</p>`;
+    const src = product.imagePath.replace('large', 'small');
+
+    return `<div class="card col-8 mb-3 shadow rounded">
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <div class="col-6">
+                    <h5 class="card-title">${product.name}</h5>
+                    <h6 class="card-subtitle text-muted mb-4">${product.description.split('<br>').join(' ')}</h6>
+                    <p class="card-text">Was $${product.prevPrice.toFixed(2)}</p>
+                    <p class="card-text">Now $${product.price.toFixed(2)}</p>
+                    <p class="card-text">Save $${product.savingsAmount.toFixed(2)}</p>
+                  </div>
+                  <div class="col-3">
+                    <img class="card-img" src="${src}" alt="Woolworths Product">
+                  </div>
+                </div>
+              </div>
+            </div>`;
   }
   
   const fill = (specials) => {
@@ -36,40 +48,23 @@ module.exports = () => {
       to: user.email,
       subject: 'A product from your list is on special!',
       html: `<!DOCTYPE html>
-        <html>
+      <html>
         <head>
-            <style>
-                body {
-                    max-width: 500px;
-                    margin: auto;
-                }
-                p {
-                    font-size: 16px;
-                    font-family: Arial, Helvetica, sans-serif;
-                }
-                h4 {
-                  font-size: 24px;
-                  font-family: Arial, Helvetica, sans-serif;
-                  font-weight: medium;
-                }
-            </style>
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         </head>
-        
         <body>
-            <div>
-                <p>Hi ${user.username}!</p>
-            </div>
-            <div>
-              <p>You are receiving this email because some items from 
-              your product list are on special. These are listed below.</p>
-            </div>
-            <div>
-                <h4>Specials</h4>
-                ${fill(specials)}
-            </div>
-            <div>
-              <p>Happy savings! Until next time.</p>
-            </div>
+          <div class="container">
+            <p class="my-4">Hi ${user.username}!</p>
+      
+            <p class="pl-0 mb-4 pb-4 col-6">You are receiving this email because one or more items on
+              your product list is now on special. These are listed down below.</p>
+            <hr class="mt-4 mb-0 py-0" />
+      
+            <h4 class="my-4">New Specials</h4>
+            ${fill(specials)}
+            <hr class="mb-4" />
+            <p class="mt-4 pt-4">Happy saving, until next time!</p>
+          </div>
         </body>
       </html>`
     }
@@ -91,8 +86,6 @@ module.exports = () => {
       
         // Only notify a user if they have at least one product on special
         if (specials.length > 0) {
-          console.log("Emailing user since they have more than one product");
-          console.log(JSON.stringify(specials[0]));
           var mailOptions = getMailOptions(user, specials);
           transporter.sendMail(mailOptions)
             .then((res) => {
