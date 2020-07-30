@@ -50,7 +50,7 @@ function App() {
         {isAuth ? <ViewProducts /> : <Redirect to='/login' />}
       </Route>
     </Router>
-    );
+  );
 }
 
 export default App;
