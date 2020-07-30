@@ -19,8 +19,6 @@ function App() {
       withCredentials: true 
     })
     .then((res) => {
-      console.log("GET /users/ response: ")
-      console.log(res.data);
       if (res.data.user) {
         console.log("User session found");
         setIsAuth(true);
