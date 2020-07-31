@@ -263,7 +263,12 @@ const getProductData = async (url) => {
 
   const response = await fetch(endpoint, options);
   const json = await response.json();
-  console.log(json);
+  console.log(response.ok);
+	console.log(response.status);
+	console.log(response.statusText);
+	console.log(response.headers.raw());
+	console.log(response.headers.get('content-type'));
+  //console.log(json);
   return json.Product;
 }
 
