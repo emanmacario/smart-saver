@@ -9,6 +9,8 @@ require('dotenv').config();
 axios.defaults.baseURL = process.env.REACT_APP_SERVER;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
+console.log(`Backend Server URL: ${process.env.REACT_APP_SERVER}`);
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
