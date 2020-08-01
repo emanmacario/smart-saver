@@ -1,0 +1,17 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 12.x
+  pre_build:
+    commands:
+      # Install dependencies
+      - echo Installing dependencies...
+      - cd ./backend
+      - npm install
+
+artifacts:
+  files:
+    - "*/**"
+  base-directory: backend
