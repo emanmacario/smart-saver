@@ -1,68 +1,44 @@
+
+
+# Smart Saver
+
+Smart Saver is a web application that allows for automatic notification of users regarding specials on their favourite Woolworths products.
+
+---
+## Motivation
+
+The motivation behind building this web application was to automate the tedious and repetitive task of checking whether Woolworths products are on special, using their website.
+
+This is handy for products that are seldom on special, such as dog food, canned tuna and peanut butter etc. which can be bought in bulk to save money.
+
+Rather than checking every few days, a user can just add multiple products at once and automatically receive a notification email whenever a product goes on special.
+
+---
+## Technologies Used
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+This website was built using:
 
-In the project directory, you can run:
+- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) for cloud database storage, [Express.js](https://expressjs.com/), [React.js](https://reactjs.org/) and [Node.js](https://nodejs.org/)
+- [MongoDB Realm's](https://www.mongodb.com/realm) serverless and trigger-based architecture for batch updating user product data as a CRON job
+- [Passport.js](http://www.passportjs.org/) for session-based user authentication and endpoint authorisation
+- [AWS CodePipeline](https://aws.amazon.com/codepipeline/), [AWS Codebuild](https://aws.amazon.com/codebuild/), and [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/) for a CI/CD pipeline and backend server deployment
+- [Netlify](https://www.netlify.com/) for frontend deployment
+- [Bootstrap 4](https://getbootstrap.com/) for CSS styling
 
-### `npm start`
+The build specification reference for AWS CodeBuild can be seen in ```buildspec.yml```.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+---
+## Configuring HTTPS for backend server
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+1. Get certificate for domain from AWS CM
+    * Need to set MX or forward email from *@<SERVER_DOMAIN> to personal email
+2. Create an application load balancer with a HTTPS listener on port 443 using the certificate (leave security groups as is), using the default SSL ```ELBSecurityPolicy```
+3. Don't forget to set environment variables in the AWS Elastic Beanstalk environment!
 
-### `npm test`
+---
+## License
+TODO: Include license
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+---
+Made by Emmanuel Macario
