@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const axios = require('axios').default;
-const fetch = require('node-fetch');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const isAuth = require('./authMiddleware');
@@ -241,60 +240,18 @@ const getProductNumber = (url) => {
   }
 }
 
-// // Obtain Woolworths product details, such as price, from 
-// // the publicly exposed Woolworths product API endpoint
-// const getProductData= async (url) => {
-//   const number = getProductNumber(url);
-//   const endpoint = `https://www.woolworths.com.au/apis/ui/product/detail/${number}`;
-//   const instance = axios.create();
-//   return await instance.get(endpoint, { headers: { 'X-Requested-With': 'XMLHttpRequest' }});
-// }
-
-
-
+// Obtain Woolworths product details, such as price, from 
+// the publicly exposed Woolworths product API endpoint
 const getProductData = async (url) => {
   const number = getProductNumber(url);
   const endpoint = `https://www.woolworths.com.au/apis/ui/product/detail/${number}`;
-  
-  const options = {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' }
-  };
-
-  const response = await fetch(endpoint, options);
-  const json = await response.json();
-  console.log(response.ok);
-	console.log(response.status);
-	console.log(response.statusText);
-	console.log(response.headers.raw());
-	console.log(response.headers.get('content-type'));
-  //console.log(json);
-  return json.Product;
+  return await axios.get(endpoint);
 }
-
-
-// const createProductObject = async (number) => {
-//   const data = await getProductData(number);
-
-//   //console.log(`Data: ${JSON.stringify(data)}`);
-
-//   // Sanity check to see if product actually exists
-//   if (!data) {
-//     console.log('No fucking data');
-//     return null;
-//   }
-
-//   console.log(data.Name);
-//   console.log(data.Description);
-//   console.log(data.InstorePrice);
-// }
-
-
-
 
 // Create a product object that can be stored in the MongoDB database
 const createProductObject = async (url) => {
-  const data = await getProductData(url);
+  const response = await getProductData(url);
+  const data = response.data['Product'];
 
   // Sanity check to see if product actually exists
   if (!data) {

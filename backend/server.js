@@ -45,7 +45,9 @@ app.use(passport.session());
 
 // Set routes
 const userRouter = require('./routes/userRoute');
+const healthCheckRouter = require('./routes/healthCheckRoute');
 app.use('/users', userRouter);
+app.use('/healthcheck', healthCheckRouter);
 
 // Schedule CRON job for user email notifications
 // Runs everyday at 6:30PM AEST, 30 minutes after
