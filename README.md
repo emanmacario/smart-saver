@@ -32,9 +32,14 @@ The build specification reference for AWS CodeBuild can be seen in ```buildspec.
 ## Configuring HTTPS for backend server
 
 1. Get certificate for domain from AWS CM
-    * Need to set MX or forward email from *@<SERVER_DOMAIN> to personal email
+    * Need to set MX or forward email from *@SERVER_DOMAIN to personal email
 2. Create an application load balancer with a HTTPS listener on port 443 using the certificate (leave security groups as is), using the default SSL ```ELBSecurityPolicy```
 3. Don't forget to set environment variables in the AWS Elastic Beanstalk environment!
+
+---
+## Future Features/Improvements
+* Responsive design to support mobile devices
+* Add a cart system so users can see how much they can potentially save when purchasing products
 
 ---
 ## License
