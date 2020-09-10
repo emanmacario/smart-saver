@@ -18,16 +18,22 @@ app.use(express.json());
 app.use(boolParser());
 app.use(express.urlencoded({ extended: true }));
 
+// Trust first proxy
+app.set('trust proxy', 1)
+
 // Session set up
 app.use(session({
   secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
-  store: new MongoStore({ mongooseConnection: connection, collection: 'sessions' }),
+  store: new MongoStore({ 
+    mongooseConnection: connection, 
+    collection: 'sessions' 
+  }),
   cookie: {
     secure: true,
     maxAge: 1000 * 60 * 60 * 24,  // Equals one day
-    sameSite: "none"
+    sameSite: "none",
   }
 }));
 
