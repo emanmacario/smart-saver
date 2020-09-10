@@ -25,8 +25,9 @@ app.use(session({
   saveUninitialized: true,
   store: new MongoStore({ mongooseConnection: connection, collection: 'sessions' }),
   cookie: {
-    secure: false,
-    maxAge: 1000 * 60 * 60 * 24  // Equals one day
+    secure: true,
+    maxAge: 1000 * 60 * 60 * 24,  // Equals one day
+    sameSite: "none"
   }
 }));
 
