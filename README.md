@@ -1,6 +1,4 @@
-
-
-# Smart Saver
+# 🍎 Smart Saver
 
 Smart Saver is a web application that allows for automatic notification of users regarding specials on their favourite Woolworths products.
 
@@ -22,7 +20,7 @@ This website was built using:
 - [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) for cloud database storage, [Express.js](https://expressjs.com/), [React.js](https://reactjs.org/) and [Node.js](https://nodejs.org/)
 - [MongoDB Realm's](https://www.mongodb.com/realm) serverless and trigger-based architecture for batch updating user product data as a CRON job
 - [Passport.js](http://www.passportjs.org/) for session-based user authentication and endpoint authorisation
-- [AWS CodePipeline](https://aws.amazon.com/codepipeline/), [AWS Codebuild](https://aws.amazon.com/codebuild/), and [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/) for a CI/CD pipeline and backend server deployment
+- [AWS CodePipeline](https://aws.amazon.com/codepipeline/), [AWS CodeBuild](https://aws.amazon.com/codebuild/), and [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/) for a CI/CD pipeline and backend server deployment
 - [Netlify](https://www.netlify.com/) for frontend deployment
 - [Bootstrap 4](https://getbootstrap.com/) for CSS styling
 
@@ -43,7 +41,7 @@ The build specification reference for AWS CodeBuild can be seen in ```buildspec.
 
 
 ## License
-TODO: Include license
+MIT © Emmanuel Macario
 
 ## Attribution
 Made by Emmanuel Macario
