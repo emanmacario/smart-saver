@@ -51,7 +51,7 @@ class ProductService {
 
 
   /**
-   * Extract the product number from A validated Woolworths product URL
+   * Extract the product number from a validated Woolworths product URL
    * @param {string} url Woolworths product URL 
    */
   getProductNumber(url) {
