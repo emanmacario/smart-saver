@@ -2,9 +2,9 @@ const router = require('express').Router();
 const axios = require('axios').default;
 const passport = require('passport');
 const mongoose = require('mongoose');
-const isAuth = require('./authMiddleware');
-const { Product } = require('../models/productModel');
-const User = require('../models/userModel');
+const isAuth = require('../middlewares/authMiddleware');
+const { Product } = require('../../models/productModel');
+const User = require('../../models/userModel');
 
 // Suppress Mongoose deprecation warnings
 mongoose.set('useFindAndModify', false);

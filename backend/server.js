@@ -63,15 +63,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Set routes
-const userRouter = require('./routes/userRoute');
-const healthCheckRouter = require('./routes/healthCheckRoute');
+const userRouter = require('./controllers/routes/userRoute');
+const healthCheckRouter = require('./controllers/routes/healthCheckRoute');
 app.use('/users', userRouter);
 app.use('/healthcheck', healthCheckRouter);
 
 // Schedule CRON job for user email notifications
 // Runs everyday at 6:30PM AEST, 30 minutes after
 // all user products are updated on MongoDB Realm
-const emailUsers = require('./realm/emailUsers');
+const emailUsers = require('./jobs/emailUsers');
 cron.schedule('30 20 * * *', emailUsers);
 
 // Server setup
