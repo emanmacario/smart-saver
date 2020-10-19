@@ -64,8 +64,10 @@ app.use(passport.session());
 
 // Set routes
 const userRouter = require('./controllers/routes/userRoute');
+const productRouter = require('./controllers/routes/productRoute');
 const healthCheckRouter = require('./controllers/routes/healthCheckRoute');
 app.use('/users', userRouter);
+app.use('/users', productRouter);
 app.use('/healthcheck', healthCheckRouter);
 
 // Schedule CRON job for user email notifications
