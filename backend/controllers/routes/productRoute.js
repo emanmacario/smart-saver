@@ -7,12 +7,21 @@ const ProductService = require('../../services/productService');
 const { Product } = require('../../models/productModel');
 
 
+const UserServiceInstance = new UserService();
+const ProductServiceInstance = new ProductService();
+
 // User products routes
 router.route('/products').post(isAuth, (req, res) => {
   // Validate the URL
   const url = req.body.url;
+  const userId = req.user._id;
+
   console.log(url);
-  valid = validUrl(url);
+  console.log(userId);
+
+
+
+  valid = ProductServiceInstance.validUrl(url);
   if (!valid) {
     return res.status(400).json({ success: false, message: 'Invalid URL entered, please try again' });
   }
@@ -22,7 +31,7 @@ router.route('/products').post(isAuth, (req, res) => {
     .then(async (user) => {
 
       // Check if user has already added the product
-      const number = ProductService.getProductNumber(url);
+      const number = ProductServiceInstance.getProductNumber(url);
       console.log(`Product Number: ${number}`);
       var isDuplicate = false;
 
@@ -38,7 +47,7 @@ router.route('/products').post(isAuth, (req, res) => {
       // Add the product for the specified user if they have not already added it
       if (!isDuplicate) {
         try {
-          const product = await ProductService.createProductObject(url);
+          const product = await ProductServiceInstance.createProductObject(url);
           if (product) {                
             User.findOneAndUpdate(
               { _id: user._id },
@@ -75,8 +84,8 @@ router.route('/products').get(isAuth, (req, res) => {
 
   User.findById(req.user._id)
     .then((user) => {
-      const filtered = ProductService.filter(user.products, name, onSpecial);
-      const products = ProductService.paginate(filtered, page);
+      const filtered = ProductServiceInstance.filter(user.products, name, onSpecial);
+      const products = ProductServiceInstance.paginate(filtered, page);
       res.status(200).json({ success: true, message: 'Products successfully retrieved', products: products });
     })
     .catch((err) => {
@@ -86,25 +95,14 @@ router.route('/products').get(isAuth, (req, res) => {
 });
 
 
-router.route('/products/:number').delete(isAuth, (req, res) => {
+router.route('/products/:number').delete(isAuth, async (req, res) => {
   const { number } = req.params;
-  console.log(`Trying to delete: ${number}`);
+  const userId = req.user._id;
 
-  User.findOneAndUpdate(
-    { _id: req.user._id },
-    { $pull: { products: { number: number } } },
-    (err, success) => {
-      if (err) {
-        console.log(err);
-        res.status(500).json({ success: false, message: 'Product could not be deleted' });
-      } else {
-        console.log(success);
-        res.status(200).json({ success: true, message: 'Product successfully deleted' });
-      }
-    }
-  );
+  const { success, message } = await UserServiceInstance.deleteProduct(userId, number);
+  let code = success ? 200 : 500;
+  res.status(code).json({ success: success, message: message });
 });
-
 
 
 module.exports = router;

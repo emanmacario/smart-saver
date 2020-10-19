@@ -2,9 +2,6 @@ const { Product } = require('../models/productModel');
 const axios = require('axios').default;
 
 class ProductService {
-  async addProduct(product) {
-
-  }
 
   /**
    * Filters an array of user products to return
@@ -14,7 +11,7 @@ class ProductService {
    * @param {string} name 
    * @param {boolean} onSpecial 
    */
-  static filter(products, name, onSpecial) {
+  filter(products, name, onSpecial) {
     const matches = products.filter((product) => {
       let c1 = true,
           c2 = true;
@@ -34,7 +31,7 @@ class ProductService {
    * @param {array} products 
    * @param {number} page 
    */
-  static paginate(products, page) {
+  paginate(products, page) {
     const PRODUCTS_PER_PAGE = 5;
     const firstIndex = (page - 1) * PRODUCTS_PER_PAGE;
     const secondIndex = firstIndex + PRODUCTS_PER_PAGE;
@@ -44,7 +41,7 @@ class ProductService {
 
   // Check the validity of the Woolworths product URL 
   // before making a call to the Woolworths API
-  static validUrl(url) {
+  validUrl(url) {
     const expression = /((https?)\/\/)?(www\.)?woolworths.com.au\/shop\/productdetails\/[0-9]+\/[a-z0-9-]+/;
     const regex = new RegExp(expression);
     return url.match(regex);
@@ -52,7 +49,7 @@ class ProductService {
 
 
   // Extract the product number from the validated Woolworths product URL
-  static getProductNumber(url) {
+  getProductNumber(url) {
     var matches = url.match(/(\d+)/);
     if (matches) {
       // Product number will always be first sequence of numbers in URL
@@ -62,15 +59,15 @@ class ProductService {
 
   // Obtain Woolworths product details, such as price, from 
   // the publicly exposed Woolworths product API endpoint
-  static async getProductData(url) {
-    const number = getProductNumber(url);
+  async getProductData(url) {
+    const number = this.getProductNumber(url);
     const endpoint = `https://www.woolworths.com.au/apis/ui/product/detail/${number}`;
     return await axios.get(endpoint);
   }
 
   // Create a product object that can be stored in the MongoDB database
-  static async createProductObject(url) {
-    const response = await getProductData(url);
+  async createProductObject(url) {
+    const response = await this.getProductData(url);
     const data = response.data['Product'];
 
     // Sanity check to see if product actually exists
@@ -91,7 +88,7 @@ class ProductService {
 
     const product = { 
       name, 
-      number: getProductNumber(url),
+      number: this.getProductNumber(url),
       url: url,
       description, 
       prevPrice, 

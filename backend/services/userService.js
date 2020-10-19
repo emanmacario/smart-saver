@@ -34,6 +34,37 @@ class UserService {
     }
   }
 
+
+   /**
+   * Adds a given Woolworths product via URL to the user's product list
+   * 
+   * @param {string} url Woolworths product URL
+   * @param {string} userId user record ID 
+   */
+  async addProduct(url, userId) {
+
+
+  }
+
+  /**
+   * Deletes a given Woolworths product from a user's product list
+   * 
+   * @param {number} number product number
+   * @param {string} userId user record ID 
+   */
+  async deleteProduct(userId, number) {
+    console.log(`Trying to delete product number '${number}' for user '${userId}'`);
+    try {
+      await User.findOneAndUpdate(
+        { _id: userId },
+        { $pull: { products: { number: number } } }
+      )
+      return { success: true, message: 'Product successfully deleted' };
+    } catch (err) {
+      console.log(err);
+      return { success: false, message: 'Product could not be deleted' };
+    }
+  }
 }
 
 module.exports = UserService;
