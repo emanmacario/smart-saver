@@ -6,9 +6,9 @@ const router = require('express').Router();
 // response
 router.route('/').get(async (req, res, next) => {
   try {
-    res.send('200 - OK');
+    res.send('200 OK');
   } catch (error) {
-    res.status(503).send('503 - SERVICE UNAVAILABLE');
+    res.status(503).send('503 Service Unavailable');
   }
 });
 

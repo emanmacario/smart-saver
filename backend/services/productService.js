@@ -2,7 +2,6 @@ const { Product } = require('../models/productModel');
 const axios = require('axios').default;
 
 class ProductService {
-
   /**
    * Filters an array of user products to return
    * only the products that match the name and
@@ -27,7 +26,8 @@ class ProductService {
   }
 
   /**
-   * 
+   * Paginates an array of products. Returns five products corresponding
+   * to the given page number
    * @param {array} products 
    * @param {number} page 
    */
@@ -39,16 +39,21 @@ class ProductService {
   }
 
 
-  // Check the validity of the Woolworths product URL 
-  // before making a call to the Woolworths API
-  validUrl(url) {
+  /**
+   * Checks the validity of a potential Woolworths product URL
+   * @param {string} url potential Woolworths product URL 
+   */
+  isValidURL(url) {
     const expression = /((https?)\/\/)?(www\.)?woolworths.com.au\/shop\/productdetails\/[0-9]+\/[a-z0-9-]+/;
     const regex = new RegExp(expression);
     return url.match(regex);
   }
 
 
-  // Extract the product number from the validated Woolworths product URL
+  /**
+   * Extract the product number from A validated Woolworths product URL
+   * @param {string} url Woolworths product URL 
+   */
   getProductNumber(url) {
     var matches = url.match(/(\d+)/);
     if (matches) {
@@ -57,25 +62,36 @@ class ProductService {
     }
   }
 
-  // Obtain Woolworths product details, such as price, from 
-  // the publicly exposed Woolworths product API endpoint
+  /**
+   * Obtain Woolworths product details, such as price, from 
+   * the publicly exposed Woolworths product API endpoint.
+   * Returns a null product if the product number does not
+   * match any of their records
+   * @param {string} url valid Woolworths product URL (in terms of syntax)
+   */
   async getProductData(url) {
     const number = this.getProductNumber(url);
     const endpoint = `https://www.woolworths.com.au/apis/ui/product/detail/${number}`;
     return await axios.get(endpoint);
   }
 
-  // Create a product object that can be stored in the MongoDB database
-  async createProductObject(url) {
+
+  /**
+   * Creates an returns an instance of a product model object for the given product.
+   * Returns null if the product denoted by the given URL does not exist in
+   * the Woolworths backend
+   * @param {string} url valid Woolworths product URL (in terms of syntax) 
+   */
+  async createProductModel(url) {
     const response = await this.getProductData(url);
     const data = response.data['Product'];
 
-    // Sanity check to see if product actually exists
+    // Sanity check to see if product actually exists in Woolworth's backend
     if (!data) {
-      console.log('No fucking data!');
       return null;
     }
     
+    // Extract and rename relevant fields
     const {
       Name: name,
       Description: description,
