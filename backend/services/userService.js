@@ -1,14 +1,13 @@
-const { Product } = require('../models/productModel');
 const User = require('../models/userModel');
 
-class UserService {
 
+class UserService {
   /**
    * Registers a user in the database (if their given username 
    * has not already been taken)
    * @param {object} user user object containing username, email, and password
    */
-  static async register(user) {
+  async register(user) {
     // Create a new user
     let newUser = User(user);
 
@@ -34,6 +33,7 @@ class UserService {
       return { code: 500, success: false, message: 'Sorry, we could not create your account right now' }
     }
   }
+
 }
 
 module.exports = UserService;
