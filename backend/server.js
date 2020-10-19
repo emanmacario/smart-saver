@@ -19,9 +19,25 @@ app.use(boolParser());
 app.use(express.urlencoded({ extended: true }));
 
 // Trust first proxy
-app.set('trust proxy', 1)
+if (process.env.NODE_ENV == 'production') {
+  app.set('trust proxy', 1)
+}
 
 // Session set up
+let cookie;
+if (process.env.NODE_ENV == 'development') {
+  cookie = {
+    secure: false,
+    maxAge: 1000 * 60 * 60 * 24
+  }
+} else {
+  cookie = {
+    secure: true,
+    maxAge: 1000 * 60 * 60 * 24,
+    sameSite: "none"
+  }
+}
+
 app.use(session({
   secret: process.env.SECRET,
   resave: false,
@@ -30,11 +46,7 @@ app.use(session({
     mongooseConnection: connection, 
     collection: 'sessions' 
   }),
-  cookie: {
-    secure: true,
-    maxAge: 1000 * 60 * 60 * 24,  // Equals one day
-    sameSite: "none",
-  }
+  cookie: cookie
 }));
 
 // Set HTTP headers for CORS
